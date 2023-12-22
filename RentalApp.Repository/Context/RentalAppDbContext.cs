@@ -25,11 +25,27 @@ public class RentalAppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder
+                .UseInMemoryDatabase("inmemory")
+                .UseLazyLoadingProxies();
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        // Navigation properties
+        modelBuilder.Entity<Rental>()
+            .HasOne(r => r.Customer)
+            .WithMany(c => c.Rentals);
+
+        modelBuilder.Entity<Rental>()
+            .HasOne(r => r.Car)
+            .WithMany(c => c.Rentals);
+
+        modelBuilder.Entity<Car>()
+            .HasMany(c => c.Maintenances)
+            .WithOne(m => m.Car);
     }
 }
