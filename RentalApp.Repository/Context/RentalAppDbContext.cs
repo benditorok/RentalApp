@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentalApp.Repository.Context;
 
@@ -16,7 +11,7 @@ public class RentalAppDbContext : DbContext
 
     public DbSet<Rental> Rentals { get; set; }
 
-    public DbSet<Maintenance> Maintenances { get; set;}
+    public DbSet<Maintenance> Maintenances { get; set; }
 
     public RentalAppDbContext()
     {

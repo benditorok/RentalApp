@@ -1,10 +1,4 @@
 ﻿using RentalApp.Repository.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentalApp.Repository.Repository;
 
@@ -13,7 +7,7 @@ namespace RentalApp.Repository.Repository;
 /// </summary>
 public abstract class Repository<T> : IRepository<T> where T : class
 {
-    private RentalAppDbContext ctx;
+    protected RentalAppDbContext ctx;
 
     public Repository(RentalAppDbContext ctx)
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RentalApp.Repository.Repository;
+﻿namespace RentalApp.Repository.Repository;
 
 /// <summary>
 /// Interface for genereic CRUD functions.
