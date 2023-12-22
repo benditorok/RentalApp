@@ -25,10 +25,10 @@ public class Rental : IEquatable<Rental>
     public int CarId { get; set; }
 
     [NotMapped]
-    public Customer Customer { get; set; } = null!;
+    public virtual Customer Customer { get; set; } = null!;
 
     [NotMapped]
-    public Car Car { get; set; } = null!;
+    public virtual Car Car { get; set; } = null!;
 
     public Rental()
     {

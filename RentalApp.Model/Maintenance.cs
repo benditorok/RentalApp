@@ -27,7 +27,7 @@ public class Maintenance : IEquatable<Maintenance>
     public int CarId { get; set; }
 
     [NotMapped]
-    public Car Car { get; set; } = null!;
+    public virtual Car Car { get; set; } = null!;
 
     public Maintenance()
     {
