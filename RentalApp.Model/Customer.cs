@@ -33,11 +33,10 @@ public class Customer : IEquatable<Customer>
 
     [NotMapped]
     [JsonIgnore]
-    public virtual ICollection<Rental> Rentals { get; set; }
+    public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
 
     public Customer()
     {
-        Rentals = new HashSet<Rental>();
     }
 
     public Customer(int customerId, string? firstName, string? lastName, string? email, string? phone, string? address)
@@ -48,7 +47,6 @@ public class Customer : IEquatable<Customer>
         Email = email;
         Phone = phone;
         Address = address;
-        Rentals = new HashSet<Rental>();
     }
 
     public bool Equals(Customer? other)

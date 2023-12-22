@@ -24,6 +24,12 @@ public class Rental : IEquatable<Rental>
     [ForeignKey(nameof(Car))]
     public int CarId { get; set; }
 
+    [NotMapped]
+    public Customer Customer { get; set; } = null!;
+
+    [NotMapped]
+    public Car Car { get; set; } = null!;
+
     public Rental()
     {
     }

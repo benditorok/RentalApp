@@ -29,15 +29,13 @@ public class Car : IEquatable<Car>
 
     [NotMapped]
     [JsonIgnore]
-    public virtual ICollection<Rental> Rentals { get; set; }
+    public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
 
     [NotMapped]
-    public virtual ICollection<Maintenance> Maintenances { get; set; }
+    public virtual ICollection<Maintenance> Maintenances { get; set; } = new HashSet<Maintenance>();
 
     public Car()
     {
-        Rentals = new HashSet<Rental>();
-        Maintenances = new HashSet<Maintenance>();
     }
 
     public Car(int carId, string? make, string? model, int year, decimal dailyCost)
@@ -47,8 +45,6 @@ public class Car : IEquatable<Car>
         Model = model;
         Year = year;
         DailyCost = dailyCost;
-        Rentals = new HashSet<Rental>();
-        Maintenances = new HashSet<Maintenance>();
     }
 
     public bool Equals(Car? other)

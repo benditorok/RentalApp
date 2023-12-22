@@ -26,6 +26,9 @@ public class Maintenance : IEquatable<Maintenance>
     [Required(ErrorMessage = "CarId cannot be empty!")]
     public int CarId { get; set; }
 
+    [NotMapped]
+    public Car Car { get; set; } = null!;
+
     public Maintenance()
     {
     }
