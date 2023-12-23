@@ -1,11 +1,12 @@
-﻿using RentalApp.Model;
+﻿using Castle.Core.Resource;
+using RentalApp.Model;
 using RentalApp.Repository;
 
 namespace RentalApp.Logic.Logic;
 
 public class CustomerLogic : ICustomerLogic
 {
-    private IRepository<Customer>? repo;
+    private IRepository<Customer> repo;
 
     public CustomerLogic(IRepository<Customer> repo)
     {
@@ -14,31 +15,75 @@ public class CustomerLogic : ICustomerLogic
 
     public void Create(Customer item)
     {
-        throw new NotImplementedException();
+        var customer = repo.Read(item.CustomerId);
+
+        if (customer == null)
+        {
+            repo.Create(item);
+        }
+        else
+        {
+            throw new ArgumentException($"Customer({item.CustomerId}) already exists! " +
+                $"Use update or delete before creating Customer({item.CustomerId})!");
+        }
     }
 
     public Customer Read(int id)
     {
-        throw new NotImplementedException();
+        var customer = repo.Read(id);
+
+        if (customer != null)
+        {
+            return customer;
+        }
+        else
+        {
+            throw new ArgumentException($"Customer({id}) does not exist!");
+        }
     }
 
     public void Update(Customer item)
     {
-        throw new NotImplementedException();
+        var customer = repo.Read(item.CustomerId);
+
+        if (customer != null)
+        {
+            repo.Update(item);
+        }
+        else
+        {
+            throw new ArgumentException($"Customer({item.CustomerId}) does not exist!");
+        }
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var customer = repo.Read(id);
+
+        if (customer != null)
+        {
+            repo.Delete(id);
+        }
+        else
+        {
+            throw new ArgumentException($"Customer({id}) does not exist!");
+        }
     }
 
     public IQueryable<Customer> ReadAll()
     {
-        throw new NotImplementedException();
+        return repo.ReadAll();
     }
 
+    /// <summary>
+    /// Get the customers who have the specified name.
+    /// </summary>
+    /// <param name="firstName">First name</param>
+    /// <param name="lastName">Last name</param>
+    /// <returns></returns>
     public IEnumerable<Customer> GetCustomersByName(string firstName, string lastName)
     {
-        throw new NotImplementedException();
+        return repo.ReadAll()
+            .Where(x => x.FirstName == firstName && x.LastName == lastName);
     }
 }
