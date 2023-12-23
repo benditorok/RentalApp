@@ -13,5 +13,13 @@ public interface ICarLogic
     void Delete(int id);
 
     IQueryable<Car> ReadAll();
+
+    IEnumerable<Car> GetCarsFromYear(int year);
+
+    IEnumerable<Car> GetCarsByMake(string make);
+
+    IEnumerable<Car> GetMostExpensive(int count);
+
+    IEnumerable<Car> GetNotMaintained();
 }
 

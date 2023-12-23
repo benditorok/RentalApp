@@ -13,4 +13,6 @@ public interface ICustomerLogic
     void Delete(int id);
 
     IQueryable<Customer> ReadAll();
+
+    IEnumerable<Customer> GetCustomersByName(string firstName, string lastName);
 }

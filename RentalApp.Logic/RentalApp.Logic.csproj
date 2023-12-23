@@ -11,8 +11,4 @@
     <ProjectReference Include="..\RentalApp.Repository\RentalApp.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logic\" />
-  </ItemGroup>
-
 </Project>

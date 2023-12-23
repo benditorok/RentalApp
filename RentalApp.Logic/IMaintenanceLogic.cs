@@ -13,5 +13,9 @@ public interface IMaintenanceLogic
     void Delete(int id);
 
     IQueryable<Maintenance> ReadAll();
+
+    IEnumerable<Maintenance> GetByDate(DateTime date);
+
+    IEnumerable<Maintenance> GetUsingKeyword(string keyword);
 }
 
