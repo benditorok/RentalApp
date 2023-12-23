@@ -14,4 +14,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RentalApp.Logic\RentalApp.Logic.csproj" />
+    <ProjectReference Include="..\RentalApp.Model\RentalApp.Model.csproj" />
+    <ProjectReference Include="..\RentalApp.Repository\RentalApp.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
