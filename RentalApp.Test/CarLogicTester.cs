@@ -5,9 +5,6 @@ namespace RentalApp.Test;
 
 internal class CarLogicTester : MockRepository
 {
-    [SetUp]
-    public override void Setup() => base.Setup();
-
     [Test]
     public void GetCarsFromYear()
     {

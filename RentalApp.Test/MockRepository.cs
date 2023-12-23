@@ -1,4 +1,5 @@
 ﻿using Moq;
+using NUnit.Framework;
 using RentalApp.Logic;
 using RentalApp.Logic.Logic;
 using RentalApp.Model;
@@ -6,19 +7,19 @@ using RentalApp.Repository;
 
 namespace RentalApp.Test;
 
-public class MockRepository
+public abstract class MockRepository
 {
     protected ICarLogic? carLogic;
-    private Mock<IRepository<Car>>? carRepo;
+    private static Mock<IRepository<Car>>? carRepo;
 
     protected ICustomerLogic? customerLogic;
-    private Mock<IRepository<Customer>>? customerRepo;
+    private static Mock<IRepository<Customer>>? customerRepo;
 
     protected IMaintenanceLogic? maintenanceLogic;
-    private Mock<IRepository<Maintenance>>? maintenanceRepo;
+    private static Mock<IRepository<Maintenance>>? maintenanceRepo;
 
     protected IRentalLogic? rentalLogic;
-    private Mock<IRepository<Rental>>? rentalRepo;
+    private static Mock<IRepository<Rental>>? rentalRepo;
 
     private static List<Car> cars = new()
     {
@@ -56,7 +57,8 @@ public class MockRepository
         new Rental(5,  new DateTime(2023, 10, 01),  new DateTime(2023, 11, 01), 2100, 4, 3)
     };
 
-    public virtual void Setup()
+    [SetUp]
+    public void Setup()
     {
         carRepo = new();
         customerRepo = new();

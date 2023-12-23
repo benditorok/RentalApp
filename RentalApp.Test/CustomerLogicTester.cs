@@ -5,9 +5,6 @@ namespace RentalApp.Test;
 
 internal class CustomerLogicTester : MockRepository
 {
-    [SetUp]
-    public override void Setup() => base.Setup();
-
     [Test]
     public void GetCustomerByName()
     {
