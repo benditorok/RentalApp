@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RentalApp.Test;
 
-namespace RentalApp.Test;
-public class CarLogicTester : MockRepository
+internal class CarLogicTester : MockRepository
 {
 
 }
