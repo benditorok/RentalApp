@@ -18,7 +18,9 @@ public interface ICarLogic
 
     IEnumerable<Car> GetCarsByMake(string make);
 
-    IEnumerable<Car> GetMostExpensive(int count);
+    IEnumerable<Car> GetMostExpensive(int count = 1);
+
+    IEnumerable<Car> GetLeastExpensive(int count = 1);
 
     IEnumerable<Car> GetNotMaintained();
 }
