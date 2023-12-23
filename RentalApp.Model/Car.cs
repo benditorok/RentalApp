@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace RentalApp.Model;
 
@@ -16,39 +11,46 @@ public class Car : IEquatable<Car>
     public int CarId { get; set; }
 
     [Required(ErrorMessage = "Make cannot be empty!")]
-    public string? Make { get; set; }
+    [StringLength(40, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
+    public string Make { get; set; } = String.Empty;
 
     [Required(ErrorMessage = "Model cannot be empty!")]
-    public string? Model { get; set; }
+    [StringLength(40, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
+    public string Model { get; set; } = String.Empty;
 
     [Required(ErrorMessage = "Year cannot be empty!")]
     public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
+
     public decimal DailyCost { get; set; }
 
     [NotMapped]
     [JsonIgnore]
-    public virtual ICollection<Rental> Rentals { get; set; }
+    public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
 
     [NotMapped]
-    public virtual ICollection<Maintenance> Maintenances { get; set; }
+    public virtual ICollection<Maintenance> Maintenances { get; set; } = new HashSet<Maintenance>();
 
-    public Car()
+    private Car()
     {
-        Rentals = new HashSet<Rental>();
-        Maintenances = new HashSet<Maintenance>();
     }
 
-    public Car(int carId, string? make, string? model, int year, decimal dailyCost)
+    public Car(int carId, string make, string model, int year, decimal dailyCost)
     {
         CarId = carId;
         Make = make;
         Model = model;
         Year = year;
         DailyCost = dailyCost;
-        Rentals = new HashSet<Rental>();
-        Maintenances = new HashSet<Maintenance>();
+    }
+
+    public Car(string make, string model, int year, decimal dailyCost)
+    {
+        Make = make;
+        Model = model;
+        Year = year;
+        DailyCost = dailyCost;
     }
 
     public bool Equals(Car? other)

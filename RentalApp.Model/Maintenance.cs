@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentalApp.Model;
 
@@ -18,21 +13,32 @@ public class Maintenance : IEquatable<Maintenance>
     public DateTime Date { get; set; }
 
     [Required(ErrorMessage = "Description cannot be empty!")]
-    public string? Description { get; set; }
+    public string Description { get; set; } = String.Empty;
 
-    public decimal Cost { get; set; }
+    public decimal Cost { get; set; } = 0m;
 
     [ForeignKey(nameof(Car))]
     [Required(ErrorMessage = "CarId cannot be empty!")]
     public int CarId { get; set; }
 
-    public Maintenance()
+    [NotMapped]
+    public virtual Car Car { get; set; } = null!;
+
+    private Maintenance()
     {
     }
 
-    public Maintenance(int maintenanceId, DateTime date, string? description, decimal cost, int carId)
+    public Maintenance(int maintenanceId, DateTime date, string description, decimal cost, int carId)
     {
         MaintenanceId = maintenanceId;
+        Date = date;
+        Description = description;
+        Cost = cost;
+        CarId = carId;
+    }
+
+    public Maintenance(DateTime date, string description, decimal cost, int carId)
+    {
         Date = date;
         Description = description;
         Cost = cost;
