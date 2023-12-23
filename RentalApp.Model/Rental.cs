@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentalApp.Model;
 
@@ -14,7 +14,7 @@ public class Rental : IEquatable<Rental>
 
     public DateTime EndDate { get; set; }
 
-    public decimal TotalCost { get; set; }
+    public decimal TotalCost { get; set; } = 0m;
 
     [Required(ErrorMessage = "CustomerId cannot be null!")]
     [ForeignKey(nameof(Customer))]
@@ -30,13 +30,22 @@ public class Rental : IEquatable<Rental>
     [NotMapped]
     public virtual Car Car { get; set; } = null!;
 
-    public Rental()
+    private Rental()
     {
     }
 
     public Rental(int rentalId, DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
     {
         RentalId = rentalId;
+        StartDate = startDate;
+        EndDate = endDate;
+        TotalCost = totalCost;
+        CustomerId = customerId;
+        CarId = carId;
+    }
+
+    public Rental(DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
+    {
         StartDate = startDate;
         EndDate = endDate;
         TotalCost = totalCost;
