@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RentalApp.Model\RentalApp.Model.csproj" />
+    <ProjectReference Include="..\RentalApp.Repository\RentalApp.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logic\" />
+  </ItemGroup>
+
 </Project>
