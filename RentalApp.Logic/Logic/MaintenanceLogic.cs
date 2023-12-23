@@ -14,36 +14,85 @@ public class MaintenanceLogic : IMaintenanceLogic
 
     public void Create(Maintenance item)
     {
-        throw new NotImplementedException();
+        var maintenance = repo.Read(item.MaintenanceId);
+
+        if (maintenance == null)
+        {
+            repo.Create(item);
+        }
+        else
+        {
+            throw new ArgumentException($"MaintenanceRecord({item.MaintenanceId}) already exists! " +
+                $"Use update or delete before creating MaintenanceRecord({item.MaintenanceId})!");
+        }
     }
 
     public Maintenance Read(int id)
     {
-        throw new NotImplementedException();
+        var maintenance = repo.Read(id);
+
+        if (maintenance != null)
+        {
+            return maintenance;
+        }
+        else
+        {
+            throw new ArgumentException($"MaintenanceRecord({id}) does not exist!");
+        }
     }
 
     public void Update(Maintenance item)
     {
-        throw new NotImplementedException();
+        var maintenance = repo.Read(item.MaintenanceId);
+
+        if (maintenance != null)
+        {
+            repo.Update(item);
+        }
+        else
+        {
+            throw new ArgumentException($"MaintenanceRecord({item.MaintenanceId}) does not exist!");
+        }
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var maintenance = repo.Read(id);
+
+        if (maintenance != null)
+        {
+            repo.Delete(id);
+        }
+        else
+        {
+            throw new ArgumentException($"MaintenanceRecord({id}) does not exist!");
+        }
     }
 
     public IQueryable<Maintenance> ReadAll()
     {
-        throw new NotImplementedException();
+        return repo.ReadAll();
     }
 
+    /// <summary>
+    /// Get maintenances done on the specified date.
+    /// </summary>
+    /// <param name="date">Date</param>
+    /// <returns></returns>
     public IEnumerable<Maintenance> GetByDate(DateTime date)
     {
-        throw new NotImplementedException();
+        return repo.ReadAll()
+            .Where(x => x.Date.Date == date.Date);
     }
 
+    /// <summary>
+    /// Get maintenances by a keyword in their description. Case insensitive.
+    /// </summary>
+    /// <param name="keyword">Keyword</param>
+    /// <returns></returns>
     public IEnumerable<Maintenance> GetUsingKeyword(string keyword)
     {
-        throw new NotImplementedException();
+        return repo.ReadAll()
+            .Where(x => x.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase));
     }
 }
