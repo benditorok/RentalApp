@@ -5,17 +5,24 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalApp.Model", "RentalApp.Model\RentalApp.Model.csproj", "{99268C88-C712-4213-AF19-90D8459B6BDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalApp.Test", "RentalApp.Test\RentalApp.Test.csproj", "{EF8E65DF-F63C-4A75-8230-A046C686D8EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalApp.Test", "RentalApp.Test\RentalApp.Test.csproj", "{EF8E65DF-F63C-4A75-8230-A046C686D8EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalApp.Repository", "RentalApp.Repository\RentalApp.Repository.csproj", "{F4F6E17A-B8EE-471C-BD71-176152CE43C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalApp.Repository", "RentalApp.Repository\RentalApp.Repository.csproj", "{F4F6E17A-B8EE-471C-BD71-176152CE43C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentalApp.Logic", "RentalApp.Logic\RentalApp.Logic.csproj", "{BF36ADCF-5764-4AD1-9607-3431F90C4687}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalApp.Logic", "RentalApp.Logic\RentalApp.Logic.csproj", "{BF36ADCF-5764-4AD1-9607-3431F90C4687}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C516EF1A-E804-417D-9616-C3FDE986036E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{AF066C07-2383-47E6-83C7-962E00670D58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9139E1BD-1CA8-433C-994D-E05D74617690}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{3D214830-DDCD-4ED1-A0DF-C150CBF6D045}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
