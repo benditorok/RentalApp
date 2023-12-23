@@ -22,8 +22,10 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
+            string conn = Environment.GetEnvironmentVariable("MYSQL_RENTAL", EnvironmentVariableTarget.User)!;
+
             optionsBuilder
-                .UseInMemoryDatabase("inmemory")
+                .UseMySQL(conn)
                 .UseLazyLoadingProxies();
         }
     }
