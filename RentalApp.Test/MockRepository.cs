@@ -49,7 +49,7 @@ public class MockRepository
 
     private static List<Rental> rentals = new()
     {
-        new Rental(1,  new DateTime(2020, 01, 01),  new DateTime(2020, 02, 01), 1233, 1, 1),
+        new Rental(1,  new DateTime(2020, 01, 01),  new DateTime(2021, 02, 01), 1233, 1, 1),
         new Rental(2,  new DateTime(2021, 07, 01),  new DateTime(2021, 09, 01), 1254, 1, 2),
         new Rental(3,  new DateTime(2022, 06, 01),  new DateTime(2023, 01, 01), 123, 3, 4),
         new Rental(4,  new DateTime(2020, 11, 01),  new DateTime(2020, 12, 01), 554, 2, 5),
