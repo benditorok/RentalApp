@@ -5,13 +5,13 @@ namespace RentalApp.Repository.Context;
 
 public class RentalAppDbContext : DbContext
 {
-    public DbSet<Car> Cars { get; set; }
+    public DbSet<Car> Cars { get; set; } = null!;
 
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Customer> Customers { get; set; } = null!;
 
-    public DbSet<Rental> Rentals { get; set; }
+    public DbSet<Rental> Rentals { get; set; } = null!;
 
-    public DbSet<Maintenance> Maintenances { get; set; }
+    public DbSet<Maintenance> Maintenances { get; set; } = null!;
 
     public RentalAppDbContext()
     {
@@ -22,10 +22,10 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn = Environment.GetEnvironmentVariable("MYSQL_RENTAL", EnvironmentVariableTarget.User)!;
+            //string conn = Environment.GetEnvironmentVariable("", EnvironmentVariableTarget.User)!;
 
             optionsBuilder
-                .UseMySQL(conn)
+                .UseInMemoryDatabase("inmemory")
                 .UseLazyLoadingProxies();
         }
     }
