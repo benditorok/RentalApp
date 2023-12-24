@@ -13,7 +13,7 @@ public class RentalAppDbContext : DbContext
 
     public DbSet<Maintenance> Maintenances { get; set; } = null!;
 
-    public RentalAppDbContext()
+    public RentalAppDbContext(DbContextOptions<RentalAppDbContext> options) : base(options)
     {
         Database.EnsureCreated();
     }
@@ -22,10 +22,11 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            //string conn = Environment.GetEnvironmentVariable("", EnvironmentVariableTarget.User)!;
-
+            string conn =  Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User) 
+                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL")!;
+            
             optionsBuilder
-                .UseInMemoryDatabase("inmemory")
+                .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
                 .UseLazyLoadingProxies();
         }
     }
