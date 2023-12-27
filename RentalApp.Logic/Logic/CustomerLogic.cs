@@ -1,5 +1,4 @@
-﻿using Castle.Core.Resource;
-using RentalApp.Model;
+﻿using RentalApp.Model;
 using RentalApp.Repository;
 
 namespace RentalApp.Logic.Logic;

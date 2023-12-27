@@ -22,9 +22,9 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn =  Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User) 
+            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)
                 ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL")!;
-            
+
             optionsBuilder
                 .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
                 .UseLazyLoadingProxies();

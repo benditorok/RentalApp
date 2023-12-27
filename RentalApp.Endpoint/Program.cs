@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Diagnostics;
-using RentalApp.Logic.Logic;
 using RentalApp.Logic;
+using RentalApp.Logic.Logic;
 using RentalApp.Model;
-using RentalApp.Repository.Repository;
 using RentalApp.Repository;
 using RentalApp.Repository.Context;
+using RentalApp.Repository.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

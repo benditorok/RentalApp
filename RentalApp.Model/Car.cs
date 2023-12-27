@@ -22,7 +22,6 @@ public class Car : IEquatable<Car>
     public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
-
     public decimal DailyCost { get; set; }
 
     [NotMapped]
