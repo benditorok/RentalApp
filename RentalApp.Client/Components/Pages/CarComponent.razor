@@ -1,11 +1,13 @@
 ﻿@using RentalApp.Client.RestApi;
 @using RentalApp.Model;
-@page "/car"
+@page "/car-ui"
 @inject IRestService RestService;
 
 
-<h1>Car controller UI</h1>
-<p>Add a car:</p>
+<h1>Car management interface</h1>
+
+<hr />
+<p>Add a car</p>
 <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
@@ -38,7 +40,14 @@
     </div>
 </form>
 
+<hr />
+<p>List all cars</p>
 <button class="mt-4 bg-gradient-to-br from-green-700 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-2 rounded border border-green-500" @onclick="GetCars">Get cars</button>
+@if (errMsg is not null)
+{
+    <p>@errMsg</p>
+}
+
 @if (cars is not null)
 {
     @foreach (Car item in cars)
@@ -49,6 +58,8 @@
 
 
 @code {
+    private string? errMsg = null!;
+
     private string carMake = "";
 
     private string carModel = "";
@@ -72,6 +83,15 @@
 
     private async Task CreateCar()
     {
-        var car = Activator.CreateInstance<Car>();
+        try
+        {
+            var car = new Car(carMake, carModel, carYear, carDailyCost);
+
+            await RestService.PostAsync(car, "Car");
+        }
+        catch (Exception ex)
+        {
+            errMsg = ex.Message;
+        }
     }
 }

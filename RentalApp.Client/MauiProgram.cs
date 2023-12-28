@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using RentalApp.Client.RestApi;
-using RentalApp.Model;
 
 namespace RentalApp.Client;
 

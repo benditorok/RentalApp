@@ -1,3 +1,7 @@
 ﻿@page "/"
+@using RentalApp.Client.RestApi;
+@inject IRestService RestService
 
 <h1>Hello, world!</h1>
+
+<h1>Service status: @(RestService.Status == true ? "UP" : "DOWN")</h1>
