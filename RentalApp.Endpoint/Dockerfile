@@ -1,4 +1,5 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+#Build from this project's folder using: docker build .. -t rentalapp -f Dockerfile
+#When running a container: -p 8080:8080 -e NPGSQL_RENTAL="Host=<ip>; Port=5432; Database=<db>; Username=postgres; Password=<pwd>"
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
@@ -8,11 +9,10 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
 COPY ["RentalApp.Endpoint/RentalApp.Endpoint.csproj", "RentalApp.Endpoint/"]
 RUN dotnet restore "./RentalApp.Endpoint/./RentalApp.Endpoint.csproj"
 COPY . .
-WORKDIR "/src/RentalApp.Endpoint"
+WORKDIR "./RentalApp.Endpoint"
 RUN dotnet build "./RentalApp.Endpoint.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
