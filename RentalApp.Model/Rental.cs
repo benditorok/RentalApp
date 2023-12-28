@@ -30,7 +30,7 @@ public class Rental : IEquatable<Rental>
     [NotMapped]
     public virtual Car Car { get; set; } = null!;
 
-    private Rental()
+    public Rental()
     {
     }
 

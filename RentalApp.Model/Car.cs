@@ -31,7 +31,7 @@ public class Car : IEquatable<Car>
     [NotMapped]
     public virtual ICollection<Maintenance> Maintenances { get; set; } = new HashSet<Maintenance>();
 
-    private Car()
+    public Car()
     {
     }
 

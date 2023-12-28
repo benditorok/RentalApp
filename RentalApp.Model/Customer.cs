@@ -30,7 +30,7 @@ public class Customer : IEquatable<Customer>
     [JsonIgnore]
     public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
 
-    private Customer()
+    public Customer()
     {
     }
 
