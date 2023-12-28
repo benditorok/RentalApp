@@ -1,0 +1,77 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@page "/car"
+@inject IRestService RestService;
+
+
+<h1>Car controller UI</h1>
+<p>Add a car:</p>
+<form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            Make
+            <input type="text" @bind="carMake" /><br />
+        </label>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            Model
+            <input type="text" @bind="carModel" /><br />
+        </label>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            Year
+            <input type="text" @bind="carYear" /><br />
+        </label>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+            Daily Cost
+            <input type="text" @bind="carDailyCost" /><br />
+        </label>
+    </div>
+    <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" @onclick="CreateCar">
+            Submit
+        </button>
+    </div>
+</form>
+
+<button class="mt-4 bg-gradient-to-br from-green-700 to-green-600 hover:from-green-600 hover:to-green-700 text-white p-2 rounded border border-green-500" @onclick="GetCars">Get cars</button>
+@if (cars is not null)
+{
+    @foreach (Car item in cars)
+    {
+        <p>@item.ToString()</p>
+    }
+}
+
+
+@code {
+    private string carMake = "";
+
+    private string carModel = "";
+
+    private int carYear = 0;
+
+    private decimal carDailyCost = 0;
+
+    private IEnumerable<Car> cars = null!;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task GetCars()
+    {
+        cars = await RestService.GetAsync<Car>("Car");
+    }
+
+    private async Task CreateCar()
+    {
+        var car = Activator.CreateInstance<Car>();
+    }
+}

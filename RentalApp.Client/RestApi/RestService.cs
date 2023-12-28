@@ -15,7 +15,12 @@ public class RestService : IRestService
 
     public RestService(string baseurl, string pingableEndpoint) 
     {
-        HttpResponseMessage response = null!;
+        client.BaseAddress = new Uri(baseurl);
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept
+            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+        HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
         do
         {
@@ -32,11 +37,6 @@ public class RestService : IRestService
 
     private void Init(string baseurl)
     {
-        client.BaseAddress = new Uri(baseurl);
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept
-            .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
         try
         {
             client.GetAsync("").GetAwaiter().GetResult();
