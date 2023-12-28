@@ -76,4 +76,8 @@
       <Folder Include="wwwroot\css\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RentalApp.Model\RentalApp.Model.csproj" />
+    </ItemGroup>
+
 </Project>
