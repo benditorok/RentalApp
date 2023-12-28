@@ -5,6 +5,8 @@
 /// </summary>
 public interface IRestService
 {
+    public bool Status { get; }
+
     Task<List<T>> GetAsync<T>(string endpoint);
 
     Task<string> GetAsJsonAsync<T>(string endpoint);
