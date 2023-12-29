@@ -14,5 +14,5 @@ public interface IRepository<T> where T : class
 
     void Delete(int id);
 
-    IQueryable<T> ReadAll();
+    IEnumerable<T> ReadAll();
 }

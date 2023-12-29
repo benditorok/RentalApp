@@ -67,7 +67,7 @@ public class RentalLogic : IRentalLogic
         }
     }
 
-    public IQueryable<Rental> ReadAll()
+    public IEnumerable<Rental> ReadAll()
     {
         return repo.ReadAll();
     }

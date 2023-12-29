@@ -12,7 +12,7 @@ public interface ICarLogic
 
     void Delete(int id);
 
-    IQueryable<Car> ReadAll();
+    IEnumerable<Car> ReadAll();
 
     IEnumerable<Car> GetCarsFromYear(int year);
 

@@ -69,7 +69,7 @@ public class CarLogic : ICarLogic
         }
     }
 
-    public IQueryable<Car> ReadAll()
+    public IEnumerable<Car> ReadAll()
     {
         return repo.ReadAll();
     }

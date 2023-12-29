@@ -12,7 +12,7 @@ public interface IMaintenanceLogic
 
     void Delete(int id);
 
-    IQueryable<Maintenance> ReadAll();
+    IEnumerable<Maintenance> ReadAll();
 
     IEnumerable<Maintenance> GetByDate(DateTime date);
 
