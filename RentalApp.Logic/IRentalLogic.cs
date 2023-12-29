@@ -12,7 +12,7 @@ public interface IRentalLogic
 
     void Delete(int id);
 
-    IQueryable<Rental> ReadAll();
+    IEnumerable<Rental> ReadAll();
 
     IEnumerable<Car> GetCarsByDate(DateTime start, DateTime end);
 

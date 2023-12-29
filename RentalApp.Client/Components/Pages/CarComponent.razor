@@ -52,7 +52,7 @@
 {
     @foreach (Car item in cars)
     {
-        <p>@item.ToString()</p>
+        <p>@($"id:{item.CarId}, make:{item.Make}, model:{item.Model}")</p>
     }
 }
 

@@ -69,7 +69,7 @@ public class MaintenanceLogic : IMaintenanceLogic
         }
     }
 
-    public IQueryable<Maintenance> ReadAll()
+    public IEnumerable<Maintenance> ReadAll()
     {
         return repo.ReadAll();
     }

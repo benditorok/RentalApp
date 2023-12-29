@@ -1,4 +1,6 @@
 ﻿using RentalApp.Repository.Context;
+using System;
+using System.Linq;
 
 namespace RentalApp.Repository.Repository;
 
@@ -30,8 +32,8 @@ public abstract class Repository<T> : IRepository<T> where T : class
         ctx.SaveChanges();
     }
 
-    public IQueryable<T> ReadAll()
+    public IEnumerable<T> ReadAll()
     {
-        return ctx.Set<T>();
+        return ctx.Set<T>().ToList();
     }
 }

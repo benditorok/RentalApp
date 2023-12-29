@@ -69,7 +69,7 @@ public class CustomerLogic : ICustomerLogic
         }
     }
 
-    public IQueryable<Customer> ReadAll()
+    public IEnumerable<Customer> ReadAll()
     {
         return repo.ReadAll();
     }
