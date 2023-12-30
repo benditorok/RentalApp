@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "other", "other", "{3D214830
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentalApp.Endpoint", "RentalApp.Endpoint\RentalApp.Endpoint.csproj", "{70005B44-B46A-4FFE-9AF6-23350AF16C09}"

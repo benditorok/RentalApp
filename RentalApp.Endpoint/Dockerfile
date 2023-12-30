@@ -1,6 +1,3 @@
-#Build from this project's folder using: docker build .. -t rentalapp -f Dockerfile
-#When running a container: -p 8080:8080 -e NPGSQL_RENTAL='Host=<ip>; Port=5432; Database=<db>; Username=postgres; Password=<pwd>S'
-
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
