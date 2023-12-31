@@ -1,4 +1,6 @@
-﻿namespace RentalApp.Repository;
+﻿using System.Linq.Expressions;
+
+namespace RentalApp.Repository;
 
 /// <summary>
 /// Interface for genereic CRUD functions.
@@ -14,7 +16,7 @@ public interface IRepository<T> where T : class
 
     void Delete(int id);
 
-    IEnumerable<T> ReadAll();
+    IQueryable<T> ReadAll();
 
     Task CreateAsync(T item);
 
@@ -23,6 +25,4 @@ public interface IRepository<T> where T : class
     Task UpdateAsync(T item);
 
     Task DeleteAsync(int id);
-
-    Task<IEnumerable<T>> ReadAllAsync();
 }

@@ -23,5 +23,25 @@ public interface ICarLogic
     IEnumerable<Car> GetLeastExpensive(int count = 1);
 
     IEnumerable<Car> GetNotMaintained();
+
+    Task CreateAsync(Car item);
+
+    Task<Car> ReadAsync(int id);
+
+    Task UpdateAsync(Car item);
+
+    Task DeleteAsync(int id);
+
+    Task<IEnumerable<Car>> ReadAllAsync();
+
+    Task<IEnumerable<Car>> GetCarsFromYearAsync(int year);
+
+    Task<IEnumerable<Car>> GetCarsByMakeAsync(string make);
+
+    Task<IEnumerable<Car>> GetMostExpensiveAsync(int count = 1);
+
+    Task<IEnumerable<Car>> GetLeastExpensiveAsync(int count = 1);
+
+    Task<IEnumerable<Car>> GetNotMaintainedAsync();
 }
 

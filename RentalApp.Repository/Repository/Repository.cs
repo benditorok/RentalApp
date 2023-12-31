@@ -2,6 +2,7 @@
 using RentalApp.Repository.Context;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace RentalApp.Repository.Repository;
 
@@ -33,9 +34,13 @@ public abstract class Repository<T> : IRepository<T> where T : class
         ctx.SaveChanges();
     }
 
-    public IEnumerable<T> ReadAll()
+    /// <summary>
+    /// Exposes the DbSet of this type.
+    /// </summary>
+    /// <returns></returns>
+    public IQueryable<T> ReadAll()
     {
-        return ctx.Set<T>().ToList();
+        return ctx.Set<T>();
     }
 
     public async Task CreateAsync(T item)
@@ -50,12 +55,8 @@ public abstract class Repository<T> : IRepository<T> where T : class
 
     public async Task DeleteAsync(int id)
     {
-        ctx.Set<T>().Remove(await ReadAsync(id));
+        var item = await ReadAsync(id);
+        ctx.Set<T>().Remove(item);
         await ctx.SaveChangesAsync();
-    }
-
-    public async Task<IEnumerable<T>> ReadAllAsync()
-    {
-        return await ctx.Set<T>().ToListAsync();
     }
 }
