@@ -1,4 +1,5 @@
-﻿using RentalApp.Repository.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using RentalApp.Repository.Context;
 using System;
 using System.Linq;
 
@@ -35,5 +36,26 @@ public abstract class Repository<T> : IRepository<T> where T : class
     public IEnumerable<T> ReadAll()
     {
         return ctx.Set<T>().ToList();
+    }
+
+    public async Task CreateAsync(T item)
+    {
+        ctx.Set<T>().Add(item);
+        await ctx.SaveChangesAsync();
+    }
+
+    public abstract Task<T> ReadAsync(int id);
+
+    public abstract Task UpdateAsync(T item);
+
+    public async Task DeleteAsync(int id)
+    {
+        ctx.Set<T>().Remove(await ReadAsync(id));
+        await ctx.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<T>> ReadAllAsync()
+    {
+        return await ctx.Set<T>().ToListAsync();
     }
 }

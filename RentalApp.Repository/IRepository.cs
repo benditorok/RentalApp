@@ -15,4 +15,14 @@ public interface IRepository<T> where T : class
     void Delete(int id);
 
     IEnumerable<T> ReadAll();
+
+    Task CreateAsync(T item);
+
+    Task<T> ReadAsync(int id);
+
+    Task UpdateAsync(T item);
+
+    Task DeleteAsync(int id);
+
+    Task<IEnumerable<T>> ReadAllAsync();
 }
