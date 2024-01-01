@@ -72,7 +72,7 @@ public class CustomerLogic : ICustomerLogic
 
     public IEnumerable<Customer> ReadAll()
     {
-        return repo.ReadAll();
+        return repo.ReadAll().ToList();
     }
 
     /// <summary>
@@ -84,7 +84,8 @@ public class CustomerLogic : ICustomerLogic
     public IEnumerable<Customer> GetCustomersByName(string firstName, string lastName)
     {
         return repo.ReadAll()
-            .Where(x => x.FirstName == firstName && x.LastName == lastName);
+            .Where(x => x.FirstName == firstName && x.LastName == lastName)
+            .ToList();
     }
 
     public async Task CreateAsync(Customer item)

@@ -83,7 +83,8 @@ public class CarLogic : ICarLogic
     public IEnumerable<Car> GetCarsFromYear(int year)
     {
         return repo.ReadAll()
-            .Where(x => x.Year == year);
+            .Where(x => x.Year == year)
+            .ToList();
     }
 
     /// <summary>
@@ -94,7 +95,8 @@ public class CarLogic : ICarLogic
     public IEnumerable<Car> GetCarsByMake(string make)
     {
         return repo.ReadAll()
-            .Where(x => x.Make == make);
+            .Where(x => x.Make == make)
+            .ToList();
     }
 
     /// <summary>
@@ -106,7 +108,8 @@ public class CarLogic : ICarLogic
     {
         return repo.ReadAll()
             .OrderByDescending(x => x.DailyCost)
-            .Take(count);
+            .Take(count)
+            .ToList();
     }
 
     /// <summary>
@@ -118,7 +121,8 @@ public class CarLogic : ICarLogic
     {
         return repo.ReadAll()
             .OrderBy(x => x.DailyCost)
-            .Take(count);
+            .Take(count)
+            .ToList();
     }
 
     /// <summary>
@@ -128,7 +132,8 @@ public class CarLogic : ICarLogic
     public IEnumerable<Car> GetNotMaintained()
     {
         return repo.ReadAll()
-                .Where(x => x.Maintenances.Count() == 0);
+                .Where(x => x.Maintenances.Count() == 0)
+                .ToList();
     }
 
     public async Task CreateAsync(Car item)

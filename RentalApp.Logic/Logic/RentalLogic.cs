@@ -70,7 +70,7 @@ public class RentalLogic : IRentalLogic
 
     public IEnumerable<Rental> ReadAll()
     {
-        return repo.ReadAll();
+        return repo.ReadAll().ToList();
     }
 
     /// <summary>
@@ -84,8 +84,8 @@ public class RentalLogic : IRentalLogic
         return repo.ReadAll()
             .Where(x => x.StartDate.Date >= start.Date && x.EndDate.Date <= end.Date)
             .OrderBy(x => x.CarId)
-            .Select(x => x.Car);
-
+            .Select(x => x.Car)
+            .ToList();
     }
 
     /// <summary>
@@ -98,7 +98,8 @@ public class RentalLogic : IRentalLogic
         return repo.ReadAll()
                 .Where(x => x.StartDate.Date == date.Date)
                 .OrderBy(x => x.CustomerId)
-                .Select(x => x.Customer);
+                .Select(x => x.Customer)
+                .ToList();
     }
 
     /// <summary>
@@ -110,7 +111,8 @@ public class RentalLogic : IRentalLogic
     {
         return repo.ReadAll()
                 .Where(x => x.StartDate.Date <= date.Date && x.EndDate.Date >= date.Date)
-                .OrderBy(x => x.RentalId);
+                .OrderBy(x => x.RentalId)
+                .ToList();
     }
 
     public async Task CreateAsync(Rental item)

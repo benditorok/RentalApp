@@ -72,7 +72,7 @@ public class MaintenanceLogic : IMaintenanceLogic
 
     public IEnumerable<Maintenance> ReadAll()
     {
-        return repo.ReadAll();
+        return repo.ReadAll().ToList();
     }
 
     /// <summary>
@@ -83,7 +83,8 @@ public class MaintenanceLogic : IMaintenanceLogic
     public IEnumerable<Maintenance> GetByDate(DateTime date)
     {
         return repo.ReadAll()
-            .Where(x => x.Date.Date == date.Date);
+            .Where(x => x.Date.Date == date.Date)
+            .ToList();
     }
 
     /// <summary>
@@ -94,7 +95,8 @@ public class MaintenanceLogic : IMaintenanceLogic
     public IEnumerable<Maintenance> GetUsingKeyword(string keyword)
     {
         return repo.ReadAll()
-            .Where(x => x.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            .Where(x => x.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            .ToList();
     }
 
     public async Task CreateAsync(Maintenance item)
