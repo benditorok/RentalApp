@@ -8,7 +8,7 @@ internal class MaintenanceLogicTester : MockRepository
     [Test]
     public void GetByDate()
     {
-        var actual = maintenanceLogic?.GetByDate(new DateTime(2021, 07, 01));
+        var actual = maintenanceLogic.GetByDate(new DateTime(2021, 07, 01));
 
         var expected = new List<Maintenance>()
         {
@@ -21,7 +21,34 @@ internal class MaintenanceLogicTester : MockRepository
     [Test]
     public void GetUsingKeyword()
     {
-        var actual = maintenanceLogic?.GetUsingKeyword("oil");
+        var actual = maintenanceLogic.GetUsingKeyword("oil");
+
+        var expected = new List<Maintenance>()
+        {
+            new Maintenance(2, new DateTime(2022, 02, 01), "Oil change", 1234, 1),
+            new Maintenance(4, new DateTime(2020, 10, 01), "Oil change", 213, 5)
+        };
+
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public async Task GetByDateAsync()
+    {
+        var actual = await maintenanceLogic.GetByDateAsync(new DateTime(2021, 07, 01));
+
+        var expected = new List<Maintenance>()
+        {
+            new Maintenance(3, new DateTime(2021, 07, 01), "Tire change", 3310, 3)
+        };
+
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public async Task GetUsingKeywordAsync()
+    {
+        var actual = await maintenanceLogic.GetUsingKeywordAsync("oil");
 
         var expected = new List<Maintenance>()
         {
