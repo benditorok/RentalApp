@@ -33,3 +33,16 @@ To run the container replace PWD with your password for the PostgreSQL database:
 docker run -d -it --name rentalapp --restart=unless-stopped -p 8080:8080 -e NPGSQL_RENTAL='Host=host.docker.internal; Port=5432; Database=rental; Username=postgres; Password=PWD' -d rentalapp
 ```
 ## Work in Progress
+
+## Migrations
+Using the Package Manager Console:
+```
+Add-Migration InitialCreate -p RentalApp.Repository -s RentalApp.Endpoint
+Update-Database
+```
+
+## Tailwindcss
+[Installation](https://tailwindcss.com/docs/installation).
+```
+ npx tailwindcss -i .\Styles\app.css -o .\wwwroot\css\app.css --watch
+```

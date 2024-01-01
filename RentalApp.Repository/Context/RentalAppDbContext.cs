@@ -5,13 +5,13 @@ namespace RentalApp.Repository.Context;
 
 public class RentalAppDbContext : DbContext
 {
-    public DbSet<Car> Cars { get; set; } = null!;
+    public virtual DbSet<Car> Cars { get; set; } = null!;
 
-    public DbSet<Customer> Customers { get; set; } = null!;
+    public virtual DbSet<Customer> Customers { get; set; } = null!;
 
-    public DbSet<Rental> Rentals { get; set; } = null!;
+    public virtual DbSet<Rental> Rentals { get; set; } = null!;
 
-    public DbSet<Maintenance> Maintenances { get; set; } = null!;
+    public virtual DbSet<Maintenance> Maintenances { get; set; } = null!;
 
     public RentalAppDbContext(DbContextOptions<RentalAppDbContext> options) : base(options)
     {

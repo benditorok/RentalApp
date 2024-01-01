@@ -19,4 +19,20 @@ public interface IRentalLogic
     IEnumerable<Customer> GetCustomersByDate(DateTime date);
 
     IEnumerable<Rental> GetActiveRentals(DateTime date);
+
+    Task CreateAsync(Rental item);
+
+    Task<Rental> ReadAsync(int id);
+
+    Task UpdateAsync(Rental item);
+
+    Task DeleteAsync(int id);
+
+    Task<IEnumerable<Rental>> ReadAllAsync();
+
+    Task<IEnumerable<Car>> GetCarsByDateAsync(DateTime start, DateTime end);
+
+    Task<IEnumerable<Customer>> GetCustomersByDateAsync(DateTime date);
+
+    Task<IEnumerable<Rental>> GetActiveRentalsAsync(DateTime date);
 }

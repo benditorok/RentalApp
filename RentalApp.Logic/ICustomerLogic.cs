@@ -15,4 +15,16 @@ public interface ICustomerLogic
     IEnumerable<Customer> ReadAll();
 
     IEnumerable<Customer> GetCustomersByName(string firstName, string lastName);
+
+    Task CreateAsync(Customer item);
+
+    Task<Customer> ReadAsync(int id);
+
+    Task UpdateAsync(Customer item);
+
+    Task DeleteAsync(int id);
+
+    Task<IEnumerable<Customer>> ReadAllAsync();
+
+    Task<IEnumerable<Customer>> GetCustomersByNameAsync(string firstName, string lastName);
 }

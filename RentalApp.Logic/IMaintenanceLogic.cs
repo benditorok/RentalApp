@@ -17,5 +17,19 @@ public interface IMaintenanceLogic
     IEnumerable<Maintenance> GetByDate(DateTime date);
 
     IEnumerable<Maintenance> GetUsingKeyword(string keyword);
+
+    Task CreateAsync(Maintenance item);
+
+    Task<Maintenance> ReadAsync(int id);
+
+    Task UpdateAsync(Maintenance item);
+
+    Task DeleteAsync(int id);
+
+    Task<IEnumerable<Maintenance>> ReadAllAsync();
+
+    Task<IEnumerable<Maintenance>> GetByDateAsync(DateTime date);
+
+    Task<IEnumerable<Maintenance>> GetUsingKeywordAsync(string keyword);
 }
 

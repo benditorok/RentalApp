@@ -19,11 +19,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Rental>> ReadAll()
+    public async Task<ActionResult<IEnumerable<Rental>>> ReadAllAsync()
     {
         try
         {
-            var result = rentalLogic.ReadAll();
+            var result = await rentalLogic.ReadAllAsync();
 
             return Ok(result);
         }
@@ -34,11 +34,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Rental> Read(int id)
+    public async Task<ActionResult<Rental>> ReadAsync(int id)
     {
         try
         {
-            var result = rentalLogic.Read(id);
+            var result = await rentalLogic.ReadAsync(id);
 
             return Ok(result);
         }
@@ -49,11 +49,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] Rental value)
+    public async Task<ActionResult> PostAsync([FromBody] Rental value)
     {
         try
         {
-            rentalLogic.Create(value);
+            await rentalLogic.CreateAsync(value);
 
             return Ok();
         }
@@ -64,11 +64,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpPut]
-    public ActionResult Update([FromBody] Rental value)
+    public async Task<ActionResult> UpdateAsync([FromBody] Rental value)
     {
         try
         {
-            rentalLogic.Update(value);
+            await rentalLogic.UpdateAsync(value);
 
             return Ok();
         }
@@ -79,11 +79,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> DeleteAsync(int id)
     {
         try
         {
-            rentalLogic.Delete(id);
+            await rentalLogic.DeleteAsync(id);
 
             return Ok();
         }
@@ -94,11 +94,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpGet("GetCarsByDate/{start}/{end}")]
-    public ActionResult<IEnumerable<Car>> GetCarsByDate(DateTime start, DateTime end)
+    public async Task<ActionResult<IEnumerable<Car>>> GetCarsByDateAsync(DateTime start, DateTime end)
     {
         try
         {
-            var result = rentalLogic.GetCarsByDate(start, end);
+            var result = await rentalLogic.GetCarsByDateAsync(start, end);
 
             return Ok(result);
         }
@@ -109,11 +109,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpGet("GetCustomersByDate/{date}")]
-    public ActionResult<IEnumerable<Customer>> GetCustomersByDate(DateTime date)
+    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomersByDateAsync(DateTime date)
     {
         try
         {
-            var result = rentalLogic.GetCustomersByDate(date);
+            var result = await rentalLogic.GetCustomersByDateAsync(date);
 
             return Ok(result);
         }
@@ -124,11 +124,11 @@ public class RentalController : ControllerBase
     }
 
     [HttpGet("GetActiveRentals/{date}")]
-    public ActionResult<IEnumerable<Rental>> GetActiveRentals(DateTime date)
+    public async Task<ActionResult<IEnumerable<Rental>>> GetActiveRentalsAsync(DateTime date)
     {
         try
         {
-            var result = rentalLogic.GetActiveRentals(date);
+            var result = await rentalLogic.GetActiveRentalsAsync(date);
 
             return Ok(result);
         }
