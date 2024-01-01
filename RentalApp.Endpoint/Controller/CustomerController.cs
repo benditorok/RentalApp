@@ -19,11 +19,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Customer>> ReadAll()
+    public async Task<ActionResult<IEnumerable<Customer>>> ReadAllAsync()
     {
         try
         {
-            var result = customerLogic.ReadAll();
+            var result = await customerLogic.ReadAllAsync();
 
             return Ok(result);
         }
@@ -34,11 +34,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Customer> Read(int id)
+    public async Task<ActionResult<Customer>> ReadAsync(int id)
     {
         try
         {
-            var result = customerLogic.Read(id);
+            var result = await customerLogic.ReadAsync(id);
 
             return Ok(result);
         }
@@ -49,11 +49,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] Customer value)
+    public async Task<ActionResult> PostAsync([FromBody] Customer value)
     {
         try
         {
-            customerLogic.Create(value);
+            await customerLogic.CreateAsync(value);
 
             return Ok();
         }
@@ -64,11 +64,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPut]
-    public ActionResult Update([FromBody] Customer value)
+    public async Task<ActionResult> UpdateAsync([FromBody] Customer value)
     {
         try
         {
-            customerLogic.Update(value);
+            await customerLogic.UpdateAsync(value);
 
             return Ok();
         }
@@ -79,11 +79,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> DeleteAsync(int id)
     {
         try
         {
-            customerLogic.Delete(id);
+            await customerLogic.DeleteAsync(id);
 
             return Ok();
         }
@@ -94,11 +94,11 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("GetCustomersByName/{firstName}/{lastName}")]
-    public ActionResult<IEnumerable<Customer>> GetCustomersByName(string firstName, string lastName)
+    public async Task<ActionResult<IEnumerable<Customer>>> GetCustomersByNameAsync(string firstName, string lastName)
     {
         try
         {
-            var result = customerLogic.GetCustomersByName(firstName, lastName);
+            var result = await customerLogic.GetCustomersByNameAsync(firstName, lastName);
 
             return Ok(result);
         }

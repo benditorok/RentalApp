@@ -8,8 +8,8 @@ public class StatusController : ControllerBase
 {
     [Route("")]
     [HttpPost, HttpGet]
-    public ActionResult Get()
+    public async Task<ActionResult> GetAsync()
     {
-        return Ok();
+        return await Task.Run(Ok);
     }
 }

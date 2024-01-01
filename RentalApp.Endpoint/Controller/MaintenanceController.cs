@@ -19,11 +19,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Maintenance>> ReadAll()
+    public async Task<ActionResult<IEnumerable<Maintenance>>> ReadAllAsync()
     {
         try
         {
-            var result = maintenanceLogic.ReadAll();
+            var result = await maintenanceLogic.ReadAllAsync();
 
             return Ok(result);
         }
@@ -34,11 +34,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Maintenance> Read(int id)
+    public async Task<ActionResult<Maintenance>> ReadAsync(int id)
     {
         try
         {
-            var result = maintenanceLogic.Read(id);
+            var result = await maintenanceLogic.ReadAsync(id);
 
             return Ok(result);
         }
@@ -49,11 +49,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] Maintenance value)
+    public async Task<ActionResult> PostAsync([FromBody] Maintenance value)
     {
         try
         {
-            maintenanceLogic.Create(value);
+            await maintenanceLogic.CreateAsync(value);
 
             return Ok();
         }
@@ -64,11 +64,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpPut]
-    public ActionResult Update([FromBody] Maintenance value)
+    public async Task<ActionResult> UpdateAsync([FromBody] Maintenance value)
     {
         try
         {
-            maintenanceLogic.Update(value);
+            await maintenanceLogic.UpdateAsync(value);
 
             return Ok();
         }
@@ -79,11 +79,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> DeleteAsync(int id)
     {
         try
         {
-            maintenanceLogic.Delete(id);
+            await maintenanceLogic.DeleteAsync(id);
 
             return Ok();
         }
@@ -94,11 +94,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpGet("GetByDate/{date}")]
-    public ActionResult<IEnumerable<Maintenance>> GetByDate(DateTime date)
+    public async Task<ActionResult<IEnumerable<Maintenance>>> GetByDateAsync(DateTime date)
     {
         try
         {
-            var result = maintenanceLogic.GetByDate(date);
+            var result = await maintenanceLogic.GetByDateAsync(date);
 
             return Ok(result);
         }
@@ -109,11 +109,11 @@ public class MaintenanceController : ControllerBase
     }
 
     [HttpGet("GetUsingKeyword/{keyword}")]
-    public ActionResult<IEnumerable<Maintenance>> GetUsingKeyword(string keyword)
+    public async Task<ActionResult<IEnumerable<Maintenance>>> GetUsingKeywordAsync(string keyword)
     {
         try
         {
-            var result = maintenanceLogic.GetUsingKeyword(keyword);
+            var result = await maintenanceLogic.GetUsingKeywordAsync(keyword);
 
             return Ok(result);
         }
