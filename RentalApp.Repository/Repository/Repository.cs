@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Repository.Context;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -40,12 +41,12 @@ public abstract class Repository<T> : IRepository<T> where T : class
     /// <returns></returns>
     public IQueryable<T> ReadAll()
     {
-        return ctx.Set<T>();
+        return ctx.Set<T>().AsQueryable();
     }
 
     public async Task CreateAsync(T item)
     {
-        ctx.Set<T>().Add(item);
+        await ctx.Set<T>().AddAsync(item);
         await ctx.SaveChangesAsync();
     }
 
