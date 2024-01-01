@@ -41,3 +41,8 @@ Add-Migration InitialCreate -p RentalApp.Repository -s RentalApp.Endpoint
 Update-Database
 ```
 
+## Tailwindcss
+[Installation](https://tailwindcss.com/docs/installation).
+```
+ npx tailwindcss -i .\Styles\app.css -o .\wwwroot\css\app.css --watch
+```
