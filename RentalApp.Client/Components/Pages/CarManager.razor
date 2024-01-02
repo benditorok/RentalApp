@@ -1,6 +1,6 @@
 ﻿@using RentalApp.Client.RestApi;
 @using RentalApp.Model;
-@page "/car-ui"
+@page "/carmgr"
 @inject IRestService RestService;
 
 
@@ -78,7 +78,14 @@
 
     private async Task GetCars()
     {
-        cars = await RestService.GetAsync<Car>("Car");
+        try
+        {
+            cars = await RestService.GetAsync<Car>("Car");
+        }
+        catch (Exception ex)
+        {
+            errMsg = ex.Message;
+        }
     }
 
     private async Task CreateCar()

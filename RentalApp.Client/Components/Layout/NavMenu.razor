@@ -1,19 +1,73 @@
-﻿<ul class="flex justify-between mt-6 ml-8 text-white uppercase tracking-wider">
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@inject IRestService RestService;
+
+<ul class="flex justify-between mt-6 ml-8 text-white uppercase tracking-wider">
+    <li>
+        <div class="mr-6 pb-2 border-2 border-gray-700 w-6 h-6 @(_status ? "bg-green-500" : "bg-red-500") rounded-full"></div>
+    </li>
     <li>
         <NavLink class="mr-6 pb-2 border-b-4 border-pink-600 hover:border-green-400" href="" Match="NavLinkMatch.All">
             Home
         </NavLink>
     </li>
     <li>
-        <NavLink class="mr-6 pb-2 border-b-4 border-pink-600 hover:border-green-400" href="counter">
-            Counter
-        </NavLink>
-    </li>
-    <li>
-        <NavLink class="mr-6 pb-2 border-b-4 border-pink-600 hover:border-green-400" href="car-ui">
-            Car
-        </NavLink>
+        <div>
+            <button @onclick="ChangeDropdown" class="mr-6 pb-2 border-b-4 border-pink-600 hover:border-green-600 uppercase">Management</button>
+            <div class="@(_dropdown ? "" : "hidden") mt-2 absolute -translate-x-2 bg-gray-300 rounded-lg text-center text-gray-700 font-semibold">
+                <ul>
+                    <li>
+                        <NavLink @onclick="ChangeDropdown" href="carmgr">
+                            Rental
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink @onclick="ChangeDropdown" href="carmgr">
+                            Customer
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink @onclick="ChangeDropdown" href="carmgr">
+                            Car
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink @onclick="ChangeDropdown" href="carmgr">
+                            Maintenance
+                        </NavLink>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </li>
 </ul>
 <a class="uppercase mt-6 ml-8 text-white pb-2 border-b-4 mr-6 border-pink-600 hover:border-green-400" href="https://github.com/benditorok/RentalApp" target="_blank">GitHub repo</a>
 
+@code {
+    private bool _status = false;
+    private bool _dropdown = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        RestService.StatusEventHandler += StatusChanged;
+
+        await base.OnInitializedAsync();
+    }
+
+    private async void StatusChanged(object? sender, bool status)
+    {
+        if (status != _status)
+        {
+            _status = status;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void ChangeDropdown()
+    {
+        if (_dropdown)
+            _dropdown = false;
+        else
+            _dropdown = true;
+    }
+}
