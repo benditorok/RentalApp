@@ -5,7 +5,7 @@
 /// </summary>
 public interface IRestService
 {
-    public bool Status { get; }
+    event EventHandler<bool> StatusEventHandler;
 
     Task<List<T>> GetAsync<T>(string endpoint);
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Animations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -14,12 +13,11 @@ namespace RentalApp.Client.RestApi;
 public class RestService : IRestService
 {
     private static readonly HttpClient _client = new HttpClient();
-    private const int _interval = 10000;
+    private const int _interval = 2000;
     private Timer _timer;
     private bool _status = false;
+    public event EventHandler<bool> StatusEventHandler = null!;
 
-    public bool Status { get { return _status; } }
-    
     public RestService(string baseurl, string pingableEndpoint) 
     {
         _client.BaseAddress = new Uri(baseurl);
@@ -27,7 +25,7 @@ public class RestService : IRestService
         _client.DefaultRequestHeaders.Accept
             .Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-         _timer = new Timer(x => Tick(pingableEndpoint), null, _interval, Timeout.Infinite);
+        _timer = new Timer(async x => await Tick(pingableEndpoint), null, _interval, Timeout.Infinite);
     }
 
     private async Task Tick(string pingableEndpoint)
@@ -40,6 +38,14 @@ public class RestService : IRestService
                 _status = true;
             else
                 _status = false;
+
+            StatusEventHandler?.Invoke(this, _status);
+        }
+        catch (Exception)
+        {
+            _status = false;
+
+            StatusEventHandler?.Invoke(this, _status);
         }
         finally
         {
