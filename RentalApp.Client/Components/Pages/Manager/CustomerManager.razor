@@ -1,0 +1,259 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@page "/manager/customer"
+@inject IRestService RestService;
+
+@if (_errMsg is not null)
+{
+    <p>@_errMsg</p>
+}
+
+<h1>Customer management interface</h1>
+<hr />
+
+<h2>Add a customer</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        First name
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="John" type="text" @bind="_createCustomerFirstName" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Last name
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Doe" type="text" @bind="_createCustomerLastName" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Email address
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="example@email.com" type="text" @bind="_createCustomerEmail" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Phone number
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="+99001234567" type="text" @bind="_createCustomerPhone" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Address
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="123 Placeholder Lane, Cityville, State 54321, USA" type="text" @bind="_createCustomerAddress" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get a customer</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Customer Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="text" @bind="_readCustomerId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAsync">
+        Submit
+    </button>
+
+    @if (_readCustomer is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @_readCustomer.ToString()
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Update a customer</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Id of the car" type="text" @bind="_updateCustomerId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+        Submit
+    </button>
+
+    @if (_updateCustomer is not null)
+    {
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                First name
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="John" type="text" @bind="_updateCustomer.FirstName" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Last name
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Doe" type="text" @bind="_updateCustomer.LastName" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Email address
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="example@email.com" type="text" @bind="_updateCustomer.Email" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Phone number
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="+99001234567" type="text" @bind="_updateCustomer.Phone" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Address
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="123 Placeholder Lane, Cityville, State 54321, USA" type="text" @bind="_updateCustomer.Address" />
+            </label>
+
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+                Submit
+            </button>
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Delete a customer</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="text" @bind="_deleteCustomerId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="DeleteAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get all customers</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAllAsync">
+        Submit
+    </button>
+    @if (_readallCustomers is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @foreach (var item in _readallCustomers)
+            {
+                @item.ToString() <br />
+            }
+        </div>
+    }
+</div>
+<hr />
+
+
+@code {
+    // TODO add validation alerts or popup divs?
+    private string? _errMsg = null;
+
+    // Create field
+    private string? _createCustomerFirstName;
+    private string? _createCustomerLastName;
+    private string? _createCustomerEmail;
+    private string? _createCustomerPhone;
+    private string? _createCustomerAddress;
+
+    // Read field
+    private int? _readCustomerId;
+    private Customer? _readCustomer;
+
+    // Update field
+    private int? _updateCustomerId;
+    private Customer? _updateCustomer;
+
+    // Delete field
+    private int? _deleteCustomerId;
+
+    // ReadAll field
+    private IEnumerable<Customer>? _readallCustomers;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CreateAsync()
+    {
+        try
+        {
+            var customer = new Customer(_createCustomerFirstName ?? "", _createCustomerLastName ?? "", _createCustomerEmail ?? "", _createCustomerPhone ?? "", _createCustomerAddress?? "");
+
+            await RestService.PostAsync<Customer>(customer, "Customer");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+        finally
+        {
+            _createCustomerFirstName = null;
+            _createCustomerLastName = null;
+            _createCustomerEmail = null;
+            _createCustomerPhone = null;
+            _createCustomerAddress = null;
+        }
+    }
+
+    private async Task ReadAsync()
+    {
+        try
+        {
+            _readCustomer = await RestService.GetAsync<Customer>(_readCustomerId ?? 0, "Customer");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            if (_updateCustomer is null)
+            {
+                _updateCustomer = await RestService.GetAsync<Customer>(_updateCustomerId ?? 0, "Customer");
+            }
+            else
+            {
+                await RestService.PutAsync<Customer>(_updateCustomer, "Customer");
+                _updateCustomer = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+            _updateCustomer = null;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        try
+        {
+            await RestService.DeleteAsync(_deleteCustomerId ?? 0, "Customer");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task ReadAllAsync()
+    {
+        try
+        {
+            _readallCustomers = await RestService.GetAsync<Customer>("Customer");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+}
