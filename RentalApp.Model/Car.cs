@@ -8,6 +8,7 @@ public class Car : IEquatable<Car>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Range(1, int.MaxValue, ErrorMessage = "Id for {0} must be between {1} and {2}.")]
     public int CarId { get; set; }
 
     [Required(ErrorMessage = "Make cannot be empty!")]

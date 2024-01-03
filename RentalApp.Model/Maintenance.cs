@@ -7,6 +7,7 @@ public class Maintenance : IEquatable<Maintenance>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Range(1, int.MaxValue, ErrorMessage = "Id for {0} must be between {1} and {2}.")]
     public int MaintenanceId { get; set; }
 
     [Required(ErrorMessage = "Date cannot be empty!")]
