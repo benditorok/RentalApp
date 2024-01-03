@@ -29,7 +29,7 @@ public class Customer : IEquatable<Customer>
     public string Phone { get; set; } = String.Empty;
 
     [StringLength(128, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
-    public string Address { get; set; } = String.Empty;
+    public string? Address { get; set; }
 
     [NotMapped]
     [JsonIgnore]
@@ -39,7 +39,7 @@ public class Customer : IEquatable<Customer>
     {
     }
 
-    public Customer(int customerId, string firstName, string lastName, string email, string phone, string address)
+    public Customer(int customerId, string firstName, string lastName, string email, string phone, string? address)
     {
         CustomerId = customerId;
         FirstName = firstName;
@@ -49,7 +49,7 @@ public class Customer : IEquatable<Customer>
         Address = address;
     }
 
-    public Customer(string firstName, string lastName, string email, string phone, string address)
+    public Customer(string firstName, string lastName, string email, string phone, string? address)
     {
         FirstName = firstName;
         LastName = lastName;

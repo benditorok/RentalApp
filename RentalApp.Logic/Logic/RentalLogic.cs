@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
 using RentalApp.Repository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RentalApp.Logic.Logic;
 
@@ -82,7 +83,7 @@ public class RentalLogic : IRentalLogic
     public IEnumerable<Car> GetCarsByDate(DateTime start, DateTime end)
     {
         return repo.ReadAll()
-            .Where(x => x.StartDate.Date >= start.Date && x.EndDate.Date <= end.Date)
+            .Where(x => x.StartDate.Date >= start.Date && (x.EndDate.HasValue ? x.EndDate.Value.Date <= end.Date : false))
             .OrderBy(x => x.CarId)
             .Select(x => x.Car)
             .ToList();
@@ -110,7 +111,7 @@ public class RentalLogic : IRentalLogic
     public IEnumerable<Rental> GetActiveRentals(DateTime date)
     {
         return repo.ReadAll()
-                .Where(x => x.StartDate.Date <= date.Date && x.EndDate.Date >= date.Date)
+                .Where(x => x.StartDate.Date <= date.Date && (x.EndDate.HasValue ? x.EndDate.Value.Date >= date.Date : true))
                 .OrderBy(x => x.RentalId)
                 .ToList();
     }
@@ -185,7 +186,7 @@ public class RentalLogic : IRentalLogic
     public async Task<IEnumerable<Car>> GetCarsByDateAsync(DateTime start, DateTime end)
     {
         return await repo.ReadAll()
-                .Where(x => x.StartDate.Date >= start.Date && x.EndDate.Date <= end.Date)
+                .Where(x => x.StartDate.Date >= start.Date && (x.EndDate.HasValue ? x.EndDate.Value.Date <= end.Date : false))
                 .OrderBy(x => x.CarId)
                 .Select(x => x.Car)
                 .ToListAsync();
@@ -213,7 +214,7 @@ public class RentalLogic : IRentalLogic
     public async Task<IEnumerable<Rental>> GetActiveRentalsAsync(DateTime date)
     {
         return await repo.ReadAll()
-                .Where(x => x.StartDate.Date <= date.Date && x.EndDate.Date >= date.Date)
+                .Where(x => x.StartDate.Date <= date.Date && (x.EndDate.HasValue ? x.EndDate.Value.Date >= date.Date : true))
                 .OrderBy(x => x.RentalId)
                 .ToListAsync();
     }

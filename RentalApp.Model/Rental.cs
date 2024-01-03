@@ -12,9 +12,9 @@ public class Rental : IEquatable<Rental>
     [Required(ErrorMessage = "StartDate cannot be empty!")]
     public DateTime StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    public decimal TotalCost { get; set; } = 0m;
+    public decimal? TotalCost { get; set; }
 
     [ForeignKey(nameof(Customer))]
     [Required(ErrorMessage = "CustomerId cannot be null!")]
@@ -34,7 +34,7 @@ public class Rental : IEquatable<Rental>
     {
     }
 
-    public Rental(int rentalId, DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
+    public Rental(int rentalId, DateTime startDate, DateTime? endDate, decimal? totalCost, int customerId, int carId)
     {
         RentalId = rentalId;
         StartDate = startDate;
@@ -44,7 +44,7 @@ public class Rental : IEquatable<Rental>
         CarId = carId;
     }
 
-    public Rental(DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
+    public Rental(DateTime startDate, DateTime? endDate, decimal? totalCost, int customerId, int carId)
     {
         StartDate = startDate;
         EndDate = endDate;
