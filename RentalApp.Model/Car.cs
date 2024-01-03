@@ -19,9 +19,10 @@ public class Car : IEquatable<Car>
     public string Model { get; set; } = String.Empty;
 
     [Required(ErrorMessage = "Year cannot be empty!")]
-    public int Year { get; set; }
+    [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")] public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
+    [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")]
     public decimal DailyCost { get; set; }
 
     [NotMapped]
