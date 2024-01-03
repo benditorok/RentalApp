@@ -1,0 +1,247 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@page "/manager/maintenance"
+@inject IRestService RestService;
+
+@if (_errMsg is not null)
+{
+    <p>@_errMsg</p>
+}
+
+<h1>Maintenance management interface</h1>
+<hr />
+
+<h2>Add a maintenance</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Date
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createMaintenanceDate" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Description
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_createMaintenanceDescription" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Cost
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_createMaintenanceCost" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createMaintenanceCarId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get a maintenance</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Maintenance Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_readMaintenanceId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAsync">
+        Submit
+    </button>
+
+    @if (_readMaintenance is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @_readMaintenance.ToString()
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Update a maintenance</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Maintenance Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateMaintenanceId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+        Submit
+    </button>
+
+    @if (_updateMaintenance is not null)
+    {
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Date
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_updateMaintenance.Date" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Description
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_updateMaintenance.Description" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Cost
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_updateMaintenance.Cost" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Car Id
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateMaintenance.CarId" />
+            </label>
+
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+                Submit
+            </button>
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Delete a maintenance</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Maintenance Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_deleteMaintenanceId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="DeleteAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get all maintenances</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAllAsync">
+        Submit
+    </button>
+    @if (_readallMaintenances is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @foreach (var item in _readallMaintenances)
+            {
+                @item.ToString() <br />
+            }
+        </div>
+    }
+</div>
+<hr />
+
+
+@code {
+    // TODO add validation alerts or popup divs?
+    private string? _errMsg = null;
+
+    // Create field
+    private DateTime? _createMaintenanceDate;
+    private string? _createMaintenanceDescription;
+    private decimal? _createMaintenanceCost;
+    private int? _createMaintenanceCarId;
+
+    // Read field
+    private int? _readMaintenanceId;
+    private Maintenance? _readMaintenance;
+
+    // Update field
+    private int? _updateMaintenanceId;
+    private Maintenance? _updateMaintenance;
+
+    // Delete field
+    private int? _deleteMaintenanceId;
+
+    // ReadAll field
+    private IEnumerable<Maintenance>? _readallMaintenances;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CreateAsync()
+    {
+        try
+        {
+            var maintenance = new Maintenance(_createMaintenanceDate ?? DateTime.Now, _createMaintenanceDescription ?? "", _createMaintenanceCost ?? 0, _createMaintenanceCarId ?? 0);
+
+            await RestService.PostAsync<Maintenance>(maintenance, "Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+        finally
+        {
+            _createMaintenanceDate = null;
+            _createMaintenanceDescription = null;
+            _createMaintenanceCost = null;
+            _createMaintenanceCarId = null;
+        }
+    }
+
+    private async Task ReadAsync()
+    {
+        try
+        {
+            _readMaintenance = await RestService.GetAsync<Maintenance>(_readMaintenanceId ?? 0, "Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            if (_updateMaintenance is null)
+            {
+                _updateMaintenance = await RestService.GetAsync<Maintenance>(_updateMaintenanceId ?? 0, "Maintenance");
+            }
+            else
+            {
+                await RestService.PutAsync<Maintenance>(_updateMaintenance, "Maintenance");
+                _updateMaintenance = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+            _updateMaintenance = null;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        try
+        {
+            await RestService.DeleteAsync(_deleteMaintenanceId ?? 0, "Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task ReadAllAsync()
+    {
+        try
+        {
+            _readallMaintenances = await RestService.GetAsync<Maintenance>("Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+}
