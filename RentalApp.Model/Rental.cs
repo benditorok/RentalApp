@@ -7,7 +7,6 @@ public class Rental : IEquatable<Rental>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Range(1, int.MaxValue, ErrorMessage = "Id for {0} must be between {1} and {2}.")]
     public int RentalId { get; set; }
 
     [Required(ErrorMessage = "StartDate cannot be empty!")]
@@ -17,12 +16,12 @@ public class Rental : IEquatable<Rental>
 
     public decimal TotalCost { get; set; } = 0m;
 
-    [Required(ErrorMessage = "CustomerId cannot be null!")]
     [ForeignKey(nameof(Customer))]
+    [Required(ErrorMessage = "CustomerId cannot be null!")]
     public int CustomerId { get; set; }
 
-    [Required(ErrorMessage = "CarId cannot be null!")]
     [ForeignKey(nameof(Car))]
+    [Required(ErrorMessage = "CarId cannot be null!")]
     public int CarId { get; set; }
 
     [NotMapped]

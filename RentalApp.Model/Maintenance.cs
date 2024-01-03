@@ -7,13 +7,13 @@ public class Maintenance : IEquatable<Maintenance>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Range(1, int.MaxValue, ErrorMessage = "Id for {0} must be between {1} and {2}.")]
     public int MaintenanceId { get; set; }
 
     [Required(ErrorMessage = "Date cannot be empty!")]
     public DateTime Date { get; set; }
 
     [Required(ErrorMessage = "Description cannot be empty!")]
+    [StringLength(256, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
     public string Description { get; set; } = String.Empty;
 
     public decimal Cost { get; set; } = 0m;

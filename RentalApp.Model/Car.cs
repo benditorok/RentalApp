@@ -8,7 +8,6 @@ public class Car : IEquatable<Car>
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Range(1, int.MaxValue, ErrorMessage = "Id for {0} must be between {1} and {2}.")]
     public int CarId { get; set; }
 
     [Required(ErrorMessage = "Make cannot be empty!")]
@@ -20,7 +19,8 @@ public class Car : IEquatable<Car>
     public string Model { get; set; } = String.Empty;
 
     [Required(ErrorMessage = "Year cannot be empty!")]
-    [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")] public int Year { get; set; }
+    [Range(1990, int.MaxValue, ErrorMessage = "Year for {0} must be at least {1}.")]
+    public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
     [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")]
