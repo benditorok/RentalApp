@@ -61,4 +61,9 @@ public class Car : IEquatable<Car>
     {
         return HashCode.Combine(CarId, Make, Model, Year, DailyCost);
     }
+
+    public override string ToString()
+    {
+        return $"CarId: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, DailyCost: {DailyCost}";
+    }
 }

@@ -54,4 +54,9 @@ public class Maintenance : IEquatable<Maintenance>
     {
         return HashCode.Combine(MaintenanceId, Date, Description, CarId);
     }
+
+    public override string ToString()
+    {
+        return $"MaintenanceId: {MaintenanceId}, Date: {Date}, Description: {Description}, Cost: {Cost}, CarId:{Car}";
+    }
 }

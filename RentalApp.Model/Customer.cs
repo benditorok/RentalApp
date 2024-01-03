@@ -62,4 +62,9 @@ public class Customer : IEquatable<Customer>
     {
         return HashCode.Combine(CustomerId, FirstName, LastName, Email, Phone, Address);
     }
+
+    public override string ToString()
+    {
+        return $"CustomerId: {CustomerId}, FirstName: {FirstName}, LastName: {LastName}, Email: {Email}, Phone: {Phone}, Address: {Address}";
+    }
 }

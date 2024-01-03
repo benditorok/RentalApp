@@ -62,4 +62,9 @@ public class Rental : IEquatable<Rental>
     {
         return HashCode.Combine(RentalId, StartDate, EndDate, TotalCost);
     }
+
+    public override string ToString()
+    {
+        return $"RentalId: {RentalId}, StartDate: {StartDate}, EndDate: {EndDate}, TotalCost: {TotalCost}, CustomerId: {CustomerId}, CarId: {CarId}";
+    }
 }
