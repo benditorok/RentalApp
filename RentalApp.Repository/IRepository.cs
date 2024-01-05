@@ -1,4 +1,8 @@
-﻿namespace RentalApp.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
+
+namespace RentalApp.Repository;
 
 /// <summary>
 /// Interface for genereic CRUD functions.
@@ -15,4 +19,12 @@ public interface IRepository<T> where T : class
     void Delete(int id);
 
     IQueryable<T> ReadAll();
+
+    Task CreateAsync(T item);
+
+    Task<T> ReadAsync(int id);
+
+    Task UpdateAsync(T item);
+
+    Task DeleteAsync(int id);
 }

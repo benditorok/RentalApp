@@ -12,16 +12,16 @@ public class Rental : IEquatable<Rental>
     [Required(ErrorMessage = "StartDate cannot be empty!")]
     public DateTime StartDate { get; set; }
 
-    public DateTime EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    public decimal TotalCost { get; set; } = 0m;
+    public decimal? TotalCost { get; set; }
 
-    [Required(ErrorMessage = "CustomerId cannot be null!")]
     [ForeignKey(nameof(Customer))]
+    [Required(ErrorMessage = "CustomerId cannot be null!")]
     public int CustomerId { get; set; }
 
-    [Required(ErrorMessage = "CarId cannot be null!")]
     [ForeignKey(nameof(Car))]
+    [Required(ErrorMessage = "CarId cannot be null!")]
     public int CarId { get; set; }
 
     [NotMapped]
@@ -30,11 +30,11 @@ public class Rental : IEquatable<Rental>
     [NotMapped]
     public virtual Car Car { get; set; } = null!;
 
-    private Rental()
+    public Rental()
     {
     }
 
-    public Rental(int rentalId, DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
+    public Rental(int rentalId, DateTime startDate, DateTime? endDate, decimal? totalCost, int customerId, int carId)
     {
         RentalId = rentalId;
         StartDate = startDate;
@@ -44,7 +44,7 @@ public class Rental : IEquatable<Rental>
         CarId = carId;
     }
 
-    public Rental(DateTime startDate, DateTime endDate, decimal totalCost, int customerId, int carId)
+    public Rental(DateTime startDate, DateTime? endDate, decimal? totalCost, int customerId, int carId)
     {
         StartDate = startDate;
         EndDate = endDate;
@@ -61,5 +61,10 @@ public class Rental : IEquatable<Rental>
     public override int GetHashCode()
     {
         return HashCode.Combine(RentalId, StartDate, EndDate, TotalCost);
+    }
+
+    public override string ToString()
+    {
+        return $"RentalId: {RentalId}, StartDate: {StartDate}, EndDate: {EndDate}, TotalCost: {TotalCost}, CustomerId: {CustomerId}, CarId: {CarId}";
     }
 }

@@ -1,0 +1,259 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@page "/manager/rental"
+@inject IRestService RestService;
+
+@if (_errMsg is not null)
+{
+    <p>@_errMsg</p>
+}
+
+<h1>Rental management interface</h1>
+<hr />
+
+<h2>Add a rental</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Start date
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalStartDate" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        End date
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalEndDate" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Total cost
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_createRentalTotalCost" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Customer Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCustomerId" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCarId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get a rental</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Rental Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_readRentalId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAsync">
+        Submit
+    </button>
+
+    @if (_readallRentals is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @_readallRentals.ToString()
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Update a rental</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Rental Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateRentalId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+        Submit
+    </button>
+
+    @if (_updateRental is not null)
+    {
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Start date
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_updateRental.StartDate" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                End date
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_updateRental.EndDate" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Total cost
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_updateRental.TotalCost" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Customer Id
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateRental.CustomerId" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Car Id
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateRental.CarId" />
+            </label>
+
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+                Submit
+            </button>
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Delete a rental</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Rental Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_deleteRentalId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="DeleteAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get all rentals</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAllAsync">
+        Submit
+    </button>
+    @if (_readallRentals is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @foreach (var item in _readallRentals)
+            {
+                @item.ToString() <br />
+            }
+        </div>
+    }
+</div>
+<hr />
+
+
+@code {
+    // TODO add validation alerts or popup divs?
+    private string? _errMsg = null;
+
+    // Create field
+    private DateTime? _createRentalStartDate;
+    private DateTime? _createRentalEndDate;
+    private decimal? _createRentalTotalCost;
+    private int? _createRentalCustomerId;
+    private int? _createRentalCarId;
+
+    // Read field
+    private int? _readRentalId;
+    private Rental? _readRental;
+
+    // Update field
+    private int? _updateRentalId;
+    private Rental? _updateRental;
+
+    // Delete field
+    private int? _deleteRentalId;
+
+    // ReadAll field
+    private IEnumerable<Rental>? _readallRentals;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CreateAsync()
+    {
+        try
+        {
+            var maintenance = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
+
+            await RestService.PostAsync<Rental>(maintenance, "Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+        finally
+        {
+            _createRentalStartDate = null;
+            _createRentalEndDate = null;
+            _createRentalTotalCost = null;
+            _createRentalCustomerId = null;
+            _createRentalCarId = null;
+        }
+    }
+
+    private async Task ReadAsync()
+    {
+        try
+        {
+            _readRental = await RestService.GetAsync<Rental>(_readRentalId ?? 0, "Maintenance");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            if (_updateRental is null)
+            {
+                _updateRental = await RestService.GetAsync<Rental>(_updateRentalId ?? 0, "Rental");
+            }
+            else
+            {
+                await RestService.PutAsync<Rental>(_updateRental, "Rental");
+                _updateRental = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+            _updateRental = null;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        try
+        {
+            await RestService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task ReadAllAsync()
+    {
+        try
+        {
+            _readallRentals = await RestService.GetAsync<Rental>("Rental");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+}

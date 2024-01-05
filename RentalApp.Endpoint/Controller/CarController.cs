@@ -19,11 +19,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Car>> ReadAll()
+    public async Task<ActionResult<IEnumerable<Car>>> ReadAllAsync()
     {
         try
         {
-            var result = carLogic.ReadAll();
+            var result = await carLogic.ReadAllAsync();
 
             return Ok(result);
         }
@@ -34,11 +34,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Car> Read(int id)
+    public async Task<ActionResult<Car>> ReadAsync(int id)
     {
         try
         {
-            var result = carLogic.Read(id);
+            var result = await carLogic.ReadAsync(id);
 
             return Ok(result);
         }
@@ -49,11 +49,11 @@ public class CarController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody] Car value)
+    public async Task<ActionResult> PostAsync([FromBody] Car value)
     {
         try
         {
-            carLogic.Create(value);
+            await carLogic.CreateAsync(value);
 
             return Ok();
         }
@@ -64,11 +64,11 @@ public class CarController : ControllerBase
     }
 
     [HttpPut]
-    public ActionResult Update([FromBody] Car value)
+    public async Task<ActionResult> UpdateAsync([FromBody] Car value)
     {
         try
         {
-            carLogic.Update(value);
+            await carLogic.UpdateAsync(value);
 
             return Ok();
         }
@@ -79,11 +79,11 @@ public class CarController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> DeleteAsync(int id)
     {
         try
         {
-            carLogic.Delete(id);
+            await carLogic.DeleteAsync(id);
 
             return Ok();
         }
@@ -94,11 +94,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet("GetCarsFromYear/{year}")]
-    public ActionResult<IEnumerable<Car>> GetCarsFromYear(int year)
+    public async Task<ActionResult<IEnumerable<Car>>> GetCarsFromYearAsync(int year)
     {
         try
         {
-            var result = carLogic.GetCarsFromYear(year);
+            var result = await carLogic.GetCarsFromYearAsync(year);
 
             return Ok(result);
         }
@@ -109,11 +109,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet("GetCarsByMake/{make}")]
-    public ActionResult<IEnumerable<Car>> GetCarsByMake(string make)
+    public async Task<ActionResult<IEnumerable<Car>>> GetCarsByMakeAsync(string make)
     {
         try
         {
-            var result = carLogic.GetCarsByMake(make);
+            var result = await carLogic.GetCarsByMakeAsync(make);
 
             return Ok(result);
         }
@@ -124,11 +124,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet("GetMostExpensive/{count}")]
-    public ActionResult<IEnumerable<Car>> GetMostExpensive(int count)
+    public async Task<ActionResult<IEnumerable<Car>>> GetMostExpensiveAsync(int count)
     {
         try
         {
-            var result = carLogic.GetMostExpensive(count);
+            var result = await carLogic.GetMostExpensiveAsync(count);
 
             return Ok(result);
         }
@@ -139,11 +139,11 @@ public class CarController : ControllerBase
     }
 
     [HttpGet("GetNotMaintained")]
-    public ActionResult<IEnumerable<Car>> GetNotMaintained()
+    public async Task<ActionResult<IEnumerable<Car>>> GetNotMaintainedAsync()
     {
         try
         {
-            var result = carLogic.GetNotMaintained();
+            var result = await carLogic.GetNotMaintainedAsync();
 
             return Ok(result);
         }

@@ -1,4 +1,5 @@
-﻿using RentalApp.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using RentalApp.Model;
 using RentalApp.Repository.Context;
 using System.Reflection;
 
@@ -29,5 +30,26 @@ public class RentalRepository : Repository<Rental>
         }
 
         ctx.SaveChanges();
+    }
+
+    public override async Task<Rental> ReadAsync(int id)
+    {
+        return await ctx.Rentals.FirstOrDefaultAsync(x => x.RentalId == id) ?? null!;
+    }
+
+    public override async Task UpdateAsync(Rental item)
+    {
+        var old = await ReadAsync(item.RentalId);
+
+        foreach (PropertyInfo prop in old.GetType().GetProperties())
+        {
+            // Do not update navigation properties and keys
+            if (!prop.Name.Contains("id") && prop.GetAccessors().FirstOrDefault(x => x.IsVirtual) == null)
+            {
+                prop.SetValue(old, prop.GetValue(item));
+            }
+        }
+
+        await ctx.SaveChangesAsync();
     }
 }

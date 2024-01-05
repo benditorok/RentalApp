@@ -19,10 +19,11 @@ public class Car : IEquatable<Car>
     public string Model { get; set; } = String.Empty;
 
     [Required(ErrorMessage = "Year cannot be empty!")]
+    [Range(1990, int.MaxValue, ErrorMessage = "Year for {0} must be at least {1}.")]
     public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
-
+    [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")]
     public decimal DailyCost { get; set; }
 
     [NotMapped]
@@ -32,7 +33,7 @@ public class Car : IEquatable<Car>
     [NotMapped]
     public virtual ICollection<Maintenance> Maintenances { get; set; } = new HashSet<Maintenance>();
 
-    private Car()
+    public Car()
     {
     }
 
@@ -61,5 +62,10 @@ public class Car : IEquatable<Car>
     public override int GetHashCode()
     {
         return HashCode.Combine(CarId, Make, Model, Year, DailyCost);
+    }
+
+    public override string ToString()
+    {
+        return $"CarId: {CarId}, Make: {Make}, Model: {Model}, Year: {Year}, DailyCost: {DailyCost}";
     }
 }

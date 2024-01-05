@@ -1,0 +1,248 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@page "/manager/car"
+@inject IRestService RestService;
+
+@if (_errMsg is not null)
+{
+    <p>@_errMsg</p>
+}
+
+<h1>Car management interface</h1>
+<hr />
+
+<h2>Add a car</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Make
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Volkswagen"  type="text" @bind="_createCarMake" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Model
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Golf" type="text" @bind="_createCarModel" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Year
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020" type="number" @bind="_createCarYear" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Daily cost
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="80" type="number" @bind="_createCarDailyCost" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get a car</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_readCarId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAsync">
+        Submit
+    </button>
+
+    @if (_readCar is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @_readCar.ToString()
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Update a car</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateCarId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+        Submit
+    </button>
+
+    @if (_updateCar is not null)
+    {
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Make
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Volkswagen" type="text" @bind="_updateCar.Make" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Model
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Golf" type="text" @bind="_updateCar.Model" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Year
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020" type="number" @bind="_updateCar.Year" />
+            </label>
+            <label class="mb-4 block text-gray-700 text-sm font-bold">
+                Daily cost
+                <br />
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="80" type="number" @bind="_updateCar.DailyCost" />
+            </label>
+
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
+                Submit
+            </button>
+        </div>
+    }
+</div>
+<hr />
+
+<h2>Delete a car</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Car Id
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_deleteCarId" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="DeleteAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+<h2>Get all cars</h2>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="ReadAllAsync">
+        Submit
+    </button>
+
+    @if (_readallCars is not null)
+    {
+        <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
+            @foreach (var item in _readallCars)
+            {
+                @item.ToString() <br />
+            }
+        </div>
+    }
+</div>
+<hr />
+
+
+@code {
+    // TODO add validation alerts or popup divs?
+    private string? _errMsg = null;
+
+    // Create field
+    private string? _createCarMake;
+    private string? _createCarModel;
+    private int? _createCarYear;
+    private decimal? _createCarDailyCost;
+
+    // Read field
+    private int? _readCarId;
+    private Car? _readCar;
+
+    // Update field
+    private int? _updateCarId;
+    private Car? _updateCar;
+
+    // Delete field
+    private int? _deleteCarId;
+
+    // ReadAll field
+    private IEnumerable<Car>? _readallCars;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CreateAsync()
+    {
+        try
+        {
+            var car = new Car(_createCarMake ?? "", _createCarModel ?? "", _createCarYear ?? 0, _createCarDailyCost ?? 0m);
+
+            await RestService.PostAsync<Car>(car, "Car");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+        finally
+        {
+            _createCarMake = null;
+            _createCarModel = null;
+            _createCarYear = null;
+            _createCarDailyCost = null;
+        }
+    }
+
+    private async Task ReadAsync()
+    {
+        try
+        {
+            _readCar = await RestService.GetAsync<Car>(_readCarId ?? 0, "Car");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            if (_updateCar is null)
+            {
+                _updateCar = await RestService.GetAsync<Car>(_updateCarId ?? 0, "Car");
+            }
+            else
+            {
+                await RestService.PutAsync<Car>(_updateCar, "Car");
+                _updateCar = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+            _updateCar = null;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        try
+        {
+            await RestService.DeleteAsync(_deleteCarId ?? 0, "Car");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+
+    private async Task ReadAllAsync()
+    {
+        try
+        {
+            _readallCars = await RestService.GetAsync<Car>("Car");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+    }
+}

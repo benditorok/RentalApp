@@ -13,6 +13,7 @@ public class Maintenance : IEquatable<Maintenance>
     public DateTime Date { get; set; }
 
     [Required(ErrorMessage = "Description cannot be empty!")]
+    [StringLength(256, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
     public string Description { get; set; } = String.Empty;
 
     public decimal Cost { get; set; } = 0m;
@@ -24,7 +25,7 @@ public class Maintenance : IEquatable<Maintenance>
     [NotMapped]
     public virtual Car Car { get; set; } = null!;
 
-    private Maintenance()
+    public Maintenance()
     {
     }
 
@@ -53,5 +54,10 @@ public class Maintenance : IEquatable<Maintenance>
     public override int GetHashCode()
     {
         return HashCode.Combine(MaintenanceId, Date, Description, CarId);
+    }
+
+    public override string ToString()
+    {
+        return $"MaintenanceId: {MaintenanceId}, Date: {Date}, Description: {Description}, Cost: {Cost}, CarId:{Car}";
     }
 }

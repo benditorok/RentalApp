@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using MockQueryable.Moq;
+using Moq;
 using NUnit.Framework;
 using RentalApp.Logic;
 using RentalApp.Logic.Logic;
@@ -9,17 +10,17 @@ namespace RentalApp.Test;
 
 public abstract class MockRepository
 {
-    protected ICarLogic? carLogic;
-    private static Mock<IRepository<Car>>? carRepo;
+    protected ICarLogic carLogic = null!;
+    private static Mock<IRepository<Car>> carRepo = null!;
 
-    protected ICustomerLogic? customerLogic;
-    private static Mock<IRepository<Customer>>? customerRepo;
+    protected ICustomerLogic customerLogic = null!;
+    private static Mock<IRepository<Customer>> customerRepo = null!;
 
-    protected IMaintenanceLogic? maintenanceLogic;
-    private static Mock<IRepository<Maintenance>>? maintenanceRepo;
+    protected IMaintenanceLogic maintenanceLogic = null!;
+    private static Mock<IRepository<Maintenance>> maintenanceRepo = null!;
 
-    protected IRentalLogic? rentalLogic;
-    private static Mock<IRepository<Rental>>? rentalRepo;
+    protected IRentalLogic rentalLogic = null!;
+    private static Mock<IRepository<Rental>> rentalRepo = null!;
 
     private static List<Car> cars = new()
     {
@@ -75,19 +76,36 @@ public abstract class MockRepository
         customers.ForEach(x => x.Rentals = rentals.FindAll(y => y.CustomerId == x.CustomerId) ?? null!);
         cars.ForEach(x => x.Rentals = rentals.FindAll(y => y.CarId == x.CarId) ?? null!);
 
+        //
+        var carsMock = cars.BuildMock();
+        var rentalsMock = rentals.BuildMock();
+        var customersMock = customers.BuildMock();
+        var maintenancesMock = maintenances.BuildMock();
 
         // Mock repositories
+        //carRepo.Setup(x => x.ReadAll())
+        //    .Returns(cars.AsQueryable());
+
+        //customerRepo.Setup(x => x.ReadAll())
+        //    .Returns(customers.AsQueryable());
+
+        //maintenanceRepo.Setup(x => x.ReadAll())
+        //    .Returns(maintenances.AsQueryable());
+
+        //rentalRepo.Setup(x => x.ReadAll())
+        //    .Returns(rentals.AsQueryable());
+
         carRepo.Setup(x => x.ReadAll())
-            .Returns(cars.AsQueryable());
+           .Returns(carsMock);
 
         customerRepo.Setup(x => x.ReadAll())
-            .Returns(customers.AsQueryable());
+            .Returns(customersMock);
 
         maintenanceRepo.Setup(x => x.ReadAll())
-            .Returns(maintenances.AsQueryable());
+            .Returns(maintenancesMock);
 
         rentalRepo.Setup(x => x.ReadAll())
-            .Returns(rentals.AsQueryable());
+            .Returns(rentalsMock);
 
         // Logic setup
         carLogic = new CarLogic(carRepo.Object);
