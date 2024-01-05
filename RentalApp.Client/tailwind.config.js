@@ -4,6 +4,7 @@
 
 module.exports = {
     darkMode: 'class',
+    mode: "jit",
     content: [
         './**/**/*.razor',
         './**/index.html'
