@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentalApp.Logic;
 using RentalApp.Model;
 
@@ -9,6 +10,7 @@ namespace RentalApp.Endpoint.Controller;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class CustomerController : ControllerBase
 {
     private ICustomerLogic customerLogic;
