@@ -17,7 +17,7 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
-        builder.Services.AddSingleton<IRestService>(new RestService("http://localhost:8080/api/", "status"));
+        builder.Services.AddSingleton<IRestService>(new RestService("http://localhost:8080/", "Status"));
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

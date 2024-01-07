@@ -8,7 +8,7 @@ namespace RentalApp.Endpoint.Controller;
 /// <summary>
 /// Customer entity API Controller.
 /// </summary>
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 [Authorize]
 public class CustomerController : ControllerBase
