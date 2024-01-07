@@ -1,7 +1,7 @@
 ﻿namespace RentalApp.Client.RestApi;
 
 /// <summary>
-/// RestService interface.
+/// Rest service interface.
 /// </summary>
 public interface IRestService
 {
@@ -16,7 +16,7 @@ public interface IRestService
     Task<T> GetSingleAsync<T>(string endpoint);
 
     Task<T> GetAsync<T>(int id, string endpoint);
-    
+
     Task PostAsync<T>(T item, string endpoint);
 
     Task<string> PostAsJsonAsync(string item, string endpoint);

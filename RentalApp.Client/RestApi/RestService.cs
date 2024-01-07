@@ -1,18 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 
 namespace RentalApp.Client.RestApi;
 
 /// <summary>
-/// Rest Service implementation.
+/// Rest service implementation.
 /// </summary>
 public class RestService : IRestService
 {
@@ -20,16 +14,18 @@ public class RestService : IRestService
     private const int _pingInterval = 2000;
     private Timer _pingTimer;
     private bool _status = false;
+
     public event EventHandler<bool> StatusEventHandler = null!;
 
     // Bearer token data
     private string? _tokenType;
+
     private string? _accessToken;
     private string? _refreshToken;
     private int _expiresIn = int.MaxValue;
     private Timer? _refreshTimer;
 
-    public RestService(string baseurl, string pingableEndpoint) 
+    public RestService(string baseurl, string pingableEndpoint)
     {
         _client.BaseAddress = new Uri(baseurl);
         _client.DefaultRequestHeaders.Accept.Clear();
@@ -39,7 +35,7 @@ public class RestService : IRestService
 
         _pingTimer = new Timer(async x => await Ping(pingableEndpoint), null, _pingInterval, Timeout.Infinite);
     }
-    
+
     private async Task Ping(string pingableEndpoint)
     {
         try
@@ -62,18 +58,67 @@ public class RestService : IRestService
         }
     }
 
-    //private async Task UpdateHeaderTokenAsync()
-    //{
-    //    try
-    //    {
-    //        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_tokenType!, _accessToken);
-    //    }
-    //    catch (Exception ex) 
-    //    { 
+    /// <summary>
+    /// Set the access token of the http header.
+    /// </summary>
+    private void UpdateHeaderToken()
+    {
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_tokenType!, _accessToken);
+    }
 
-    //    }
-    //}
+    /// <summary>
+    /// Refreshes the bearer token when it expires using the refresh token.
+    /// </summary>
+    /// <returns></returns>
+    private async Task RefreshTokenAsync()
+    {
+        try
+        {
+            var requestData = new
+            {
+                refreshToken = _refreshToken
+            };
 
+            string jsonData = JsonSerializer.Serialize(requestData);
+            var requestContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _client.PostAsync("refresh", requestContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+
+                // Get the values from the response
+                JsonDocument doc = JsonDocument.Parse(content);
+                JsonElement root = doc.RootElement;
+
+                // Set token data
+                _tokenType = root.GetProperty("tokenType").GetString();
+                _accessToken = root.GetProperty("accessToken").GetString();
+                _refreshToken = root.GetProperty("refreshToken").GetString();
+                _expiresIn = root.GetProperty("expiresIn").GetInt32() * 1000;
+
+                // Update the token of the header
+                UpdateHeaderToken();
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            _refreshTimer?.Change(_expiresIn, Timeout.Infinite);
+        }
+    }
+
+    /// <summary>
+    /// Log in to the user account using an username/email and a password
+    /// </summary>
+    /// <param name="_username">Username</param>
+    /// <param name="_password">Password</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public async Task AuthorizeAsync(string _username, string _password)
     {
         // Json type definition
@@ -106,9 +151,10 @@ public class RestService : IRestService
             _expiresIn = root.GetProperty("expiresIn").GetInt32() * 1000;
 
             // Update the token of the header
-            //UpdateHeaderToken();
+            UpdateHeaderToken();
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_tokenType!, _accessToken);
+            // Create a timer to refresh the access token
+            _refreshTimer = new Timer(async x => await RefreshTokenAsync(), null, _expiresIn, Timeout.Infinite);
         }
         else
         {
@@ -201,7 +247,7 @@ public class RestService : IRestService
     }
 
     /// <summary>
-    /// Returns a JSON file as a string.
+    /// Returns the Json data as a string.
     /// </summary>
     /// <param name="item">JSON serialized input</param>
     /// <param name="endpoint">Endpoint</param>
