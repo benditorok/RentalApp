@@ -1,0 +1,55 @@
+﻿@using RentalApp.Client.RestApi;
+@using RentalApp.Model;
+@using System.Text.Json;
+@page "/login"
+@inject IRestService RestService;
+<h1>Login page</h1>
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Username or Email
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="user" type="text" @bind="_username" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Password
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="********" type="password" @bind="_password" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="LoginAsync">
+        Submit
+    </button>
+</div>
+<hr />
+
+@code {
+    private string? _errMsg;
+    public string? _username;
+    public string? _password;
+    // TODO 
+    /* 
+    httpClient.DefaultRequestHeaders.Authorization =
+    new AuthenticationHeaderValue("Bearer", "Your Oauth token");
+    Into the rest service
+    make a login page and save the bearer token to a static prop
+    other token for expiration?
+         */
+
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            await RestService.AuthorizeAsync(_username ?? "", _password ?? "");
+        }
+        catch (Exception ex)
+        {
+            _errMsg = ex.Message;
+        }
+        finally
+        {
+            _username = null;
+            _password = null;
+        }
+    }
+}
