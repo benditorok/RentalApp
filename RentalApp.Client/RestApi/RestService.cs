@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,8 @@ namespace RentalApp.Client.RestApi;
 public class RestService : IRestService
 {
     protected static readonly HttpClient _client = new HttpClient();
+    private readonly ILogger<RestService>? _logger = null;
+
     private const int _pingInterval = 2000;
     private Timer _pingTimer;
     private bool _status = false;
@@ -19,7 +22,6 @@ public class RestService : IRestService
 
     // Bearer token data
     private string? _tokenType;
-
     private string? _accessToken;
     private string? _refreshToken;
     private int _expiresIn = int.MaxValue;
@@ -36,6 +38,12 @@ public class RestService : IRestService
         _pingTimer = new Timer(async x => await Ping(pingableEndpoint), null, _pingInterval, Timeout.Infinite);
     }
 
+    public RestService(ILogger<RestService> logger, string baseurl = "http://localhost:8080/", string pingableEndpoint = "Status") : this(baseurl, pingableEndpoint)
+    {
+        //"http://localhost:8080/", "Status"
+        _logger = logger;
+    }
+
     private async Task Ping(string pingableEndpoint)
     {
         try
@@ -50,6 +58,7 @@ public class RestService : IRestService
         catch (Exception)
         {
             _status = false;
+            _logger?.LogInformation("Endpoint {pingableEndpoint} is not accessible, ping failed", pingableEndpoint);
         }
         finally
         {
@@ -64,6 +73,7 @@ public class RestService : IRestService
     private void UpdateHeaderToken()
     {
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_tokenType!, _accessToken);
+        _logger?.LogInformation("Updated bearer token.");
     }
 
     /// <summary>
@@ -104,7 +114,7 @@ public class RestService : IRestService
         }
         catch (Exception)
         {
-            throw;
+            _logger?.LogInformation("Refreshing bearer token failed!");
         }
         finally
         {
