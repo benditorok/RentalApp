@@ -1,7 +1,7 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/maintenance"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/maintenance"
-@inject IRestService RestService;
+@inject IConnectionService ConnectionService;
 
 @if (_errMsg is not null)
 {
@@ -173,7 +173,7 @@
         {
             var maintenance = new Maintenance(_createMaintenanceDate ?? DateTime.Now, _createMaintenanceDescription ?? "", _createMaintenanceCost ?? 0, _createMaintenanceCarId ?? 0);
 
-            await RestService.PostAsync<Maintenance>(maintenance, "Maintenance");
+            await ConnectionService.PostAsync<Maintenance>(maintenance, "Maintenance");
         }
         catch (Exception ex)
         {
@@ -192,7 +192,7 @@
     {
         try
         {
-            _readMaintenance = await RestService.GetAsync<Maintenance>(_readMaintenanceId ?? 0, "Maintenance");
+            _readMaintenance = await ConnectionService.GetAsync<Maintenance>(_readMaintenanceId ?? 0, "Maintenance");
         }
         catch (Exception ex)
         {
@@ -206,11 +206,11 @@
         {
             if (_updateMaintenance is null)
             {
-                _updateMaintenance = await RestService.GetAsync<Maintenance>(_updateMaintenanceId ?? 0, "Maintenance");
+                _updateMaintenance = await ConnectionService.GetAsync<Maintenance>(_updateMaintenanceId ?? 0, "Maintenance");
             }
             else
             {
-                await RestService.PutAsync<Maintenance>(_updateMaintenance, "Maintenance");
+                await ConnectionService.PutAsync<Maintenance>(_updateMaintenance, "Maintenance");
                 _updateMaintenance = null;
             }
         }
@@ -225,7 +225,7 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteMaintenanceId ?? 0, "Maintenance");
+            await ConnectionService.DeleteAsync(_deleteMaintenanceId ?? 0, "Maintenance");
         }
         catch (Exception ex)
         {
@@ -237,7 +237,7 @@
     {
         try
         {
-            _readallMaintenances = await RestService.GetAsync<Maintenance>("Maintenance");
+            _readallMaintenances = await ConnectionService.GetAsync<Maintenance>("Maintenance");
         }
         catch (Exception ex)
         {

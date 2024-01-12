@@ -1,8 +1,8 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/login"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@using System.Text.Json;
-@page "/login"
-@inject IRestService RestService;
+@inject IConnectionService ConnectionService;
+
 <h1>Login page</h1>
 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <label class="mb-4 block text-gray-700 text-sm font-bold">
@@ -40,7 +40,7 @@
     {
         try
         {
-            await RestService.AuthorizeAsync(_username ?? "", _password ?? "");
+            await ConnectionService.AuthorizeAsync(_username ?? "", _password ?? "");
         }
         catch (Exception ex)
         {

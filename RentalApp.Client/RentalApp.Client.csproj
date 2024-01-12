@@ -73,7 +73,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="RestApi\" />
       <Folder Include="wwwroot\css\" />
     </ItemGroup>
 

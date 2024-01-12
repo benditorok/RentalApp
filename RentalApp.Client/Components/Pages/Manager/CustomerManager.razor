@@ -1,7 +1,7 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/customer"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/customer"
-@inject IRestService RestService;
+@inject IConnectionService ConnectionService;
 
 @if (_errMsg is not null)
 {
@@ -184,7 +184,7 @@
         {
             var customer = new Customer(_createCustomerFirstName ?? "", _createCustomerLastName ?? "", _createCustomerEmail ?? "", _createCustomerPhone ?? "", _createCustomerAddress ?? "");
 
-            await RestService.PostAsync<Customer>(customer, "Customer");
+            await ConnectionService.PostAsync<Customer>(customer, "Customer");
         }
         catch (Exception ex)
         {
@@ -204,7 +204,7 @@
     {
         try
         {
-            _readCustomer = await RestService.GetAsync<Customer>(_readCustomerId ?? 0, "Customer");
+            _readCustomer = await ConnectionService.GetAsync<Customer>(_readCustomerId ?? 0, "Customer");
         }
         catch (Exception ex)
         {
@@ -218,11 +218,11 @@
         {
             if (_updateCustomer is null)
             {
-                _updateCustomer = await RestService.GetAsync<Customer>(_updateCustomerId ?? 0, "Customer");
+                _updateCustomer = await ConnectionService.GetAsync<Customer>(_updateCustomerId ?? 0, "Customer");
             }
             else
             {
-                await RestService.PutAsync<Customer>(_updateCustomer, "Customer");
+                await ConnectionService.PutAsync<Customer>(_updateCustomer, "Customer");
                 _updateCustomer = null;
             }
         }
@@ -237,7 +237,7 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteCustomerId ?? 0, "Customer");
+            await ConnectionService.DeleteAsync(_deleteCustomerId ?? 0, "Customer");
         }
         catch (Exception ex)
         {
@@ -249,7 +249,7 @@
     {
         try
         {
-            _readallCustomers = await RestService.GetAsync<Customer>("Customer");
+            _readallCustomers = await ConnectionService.GetAsync<Customer>("Customer");
         }
         catch (Exception ex)
         {

@@ -1,7 +1,7 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/rental"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/rental"
-@inject IRestService RestService;
+@inject IConnectionService ConnectionService;
 
 @if (_errMsg is not null)
 {
@@ -184,7 +184,7 @@
         {
             var maintenance = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
 
-            await RestService.PostAsync<Rental>(maintenance, "Maintenance");
+            await ConnectionService.PostAsync<Rental>(maintenance, "Maintenance");
         }
         catch (Exception ex)
         {
@@ -204,7 +204,7 @@
     {
         try
         {
-            _readRental = await RestService.GetAsync<Rental>(_readRentalId ?? 0, "Maintenance");
+            _readRental = await ConnectionService.GetAsync<Rental>(_readRentalId ?? 0, "Maintenance");
         }
         catch (Exception ex)
         {
@@ -218,11 +218,11 @@
         {
             if (_updateRental is null)
             {
-                _updateRental = await RestService.GetAsync<Rental>(_updateRentalId ?? 0, "Rental");
+                _updateRental = await ConnectionService.GetAsync<Rental>(_updateRentalId ?? 0, "Rental");
             }
             else
             {
-                await RestService.PutAsync<Rental>(_updateRental, "Rental");
+                await ConnectionService.PutAsync<Rental>(_updateRental, "Rental");
                 _updateRental = null;
             }
         }
@@ -237,7 +237,7 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
+            await ConnectionService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
         }
         catch (Exception ex)
         {
@@ -249,7 +249,7 @@
     {
         try
         {
-            _readallRentals = await RestService.GetAsync<Rental>("Rental");
+            _readallRentals = await ConnectionService.GetAsync<Rental>("Rental");
         }
         catch (Exception ex)
         {
