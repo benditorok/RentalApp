@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
-using RentalApp.Client.RestApi;
+using RentalApp.Client.Services;
 
 namespace RentalApp.Client;
 
@@ -24,7 +24,7 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddSingleton<IRestService, RestService>();
+        builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 
         return builder.Build();
     }
