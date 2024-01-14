@@ -3,12 +3,14 @@
 @using RentalApp.Model;
 @inject IConnectionService ConnectionService;
 
-<h1>Login page</h1>
+<h1>Manager login page</h1>
+<hr />
+
 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Username or Email
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="user" type="text" @bind="_username" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="username" type="text" @bind="_username" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Password
@@ -20,21 +22,11 @@
         Submit
     </button>
 </div>
-<hr />
 
 @code {
     private string? _errMsg;
     public string? _username;
     public string? _password;
-    // TODO 
-    /* 
-    httpClient.DefaultRequestHeaders.Authorization =
-    new AuthenticationHeaderValue("Bearer", "Your Oauth token");
-    Into the rest service
-    make a login page and save the bearer token to a static prop
-    other token for expiration?
-         */
-
 
     private async Task LoginAsync()
     {
