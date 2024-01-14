@@ -15,12 +15,21 @@ public class RentalAppIdentityDbContext : IdentityDbContext<IdentityUser, Identi
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)
-                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL")!;
+            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")! ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)!;
 
-            optionsBuilder
+            // If no connection string is present, it will use an inmemory database
+            if (conn is not null)
+            {
+                optionsBuilder
                 .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
                 .UseLazyLoadingProxies();
+            }
+            else
+            {
+                optionsBuilder
+                .UseInMemoryDatabase("rental")
+                .UseLazyLoadingProxies();
+            }
         }
     }
 
@@ -45,8 +54,8 @@ public class RentalAppIdentityDbContext : IdentityDbContext<IdentityUser, Identi
         var mainManager = new IdentityUser()
         {
             Id = "69CA1A13-F868-42D2-8F5F-C6650B9BE577", // primary key
-            UserName = "mainManager",
-            NormalizedUserName = "MAINMANAGER",
+            UserName = "Manager",
+            NormalizedUserName = "MANAGER",
             PasswordHash = hasher.HashPassword(null!, "Passw0rd")
         };
 

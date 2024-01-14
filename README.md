@@ -21,7 +21,7 @@ dotnet run --urls "http://localhost:8080/"
 ```
 
 Then set a User environment variable in your OS with the name of `NPGSQL_RENTAL` and the value of `Host=192.168.1.108; Port=5432; Database=rental; Username=postgres; Password=PWD`, where PWD is your PostgreSQL password.
-
+If not present then it will use an InMemory database.
 #### Docker
 You can build a Docker container **from the folder of RentalApp.Endpoint** using:
 ```

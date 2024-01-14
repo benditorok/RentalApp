@@ -22,12 +22,21 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)
-                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL")!;
+            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")! ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)!;
 
-            optionsBuilder
+            // If no connection string is present, it will use an inmemory database
+            if (conn is not null)
+            {
+                optionsBuilder
                 .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
                 .UseLazyLoadingProxies();
+            }
+            else
+            {
+                optionsBuilder
+                .UseInMemoryDatabase("rental")
+                .UseLazyLoadingProxies();
+            }
         }
     }
 
