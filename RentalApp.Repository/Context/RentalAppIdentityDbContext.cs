@@ -15,7 +15,7 @@ public class RentalAppIdentityDbContext : IdentityDbContext<IdentityUser, Identi
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")! ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)!;
+            string? conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")! ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)!;
 
             // If no connection string is present, it will use an inmemory database
             if (conn is not null)
