@@ -1,7 +1,7 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/car"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/car"
-@inject IRestService RestService;
+@inject IConnectionService ConnectionService;
 
 @if (_errMsg is not null)
 {
@@ -142,6 +142,8 @@
     // TODO add validation alerts or popup divs?
     private string? _errMsg = null;
 
+    // TODO Make these a single car object like when updating
+    private Car _createCar = new();
     // Create field
     private string? _createCarMake;
     private string? _createCarModel;
@@ -174,7 +176,7 @@
         {
             var car = new Car(_createCarMake ?? "", _createCarModel ?? "", _createCarYear ?? 0, _createCarDailyCost ?? 0m);
 
-            await RestService.PostAsync<Car>(car, "Car");
+            await ConnectionService.PostAsync<Car>(car, "Car");
         }
         catch (Exception ex)
         {
@@ -193,7 +195,7 @@
     {
         try
         {
-            _readCar = await RestService.GetAsync<Car>(_readCarId ?? 0, "Car");
+            _readCar = await ConnectionService.GetAsync<Car>(_readCarId ?? 0, "Car");
         }
         catch (Exception ex)
         {
@@ -207,11 +209,11 @@
         {
             if (_updateCar is null)
             {
-                _updateCar = await RestService.GetAsync<Car>(_updateCarId ?? 0, "Car");
+                _updateCar = await ConnectionService.GetAsync<Car>(_updateCarId ?? 0, "Car");
             }
             else
             {
-                await RestService.PutAsync<Car>(_updateCar, "Car");
+                await ConnectionService.PutAsync<Car>(_updateCar, "Car");
                 _updateCar = null;
             }
         }
@@ -226,7 +228,7 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteCarId ?? 0, "Car");
+            await ConnectionService.DeleteAsync(_deleteCarId ?? 0, "Car");
         }
         catch (Exception ex)
         {
@@ -238,7 +240,7 @@
     {
         try
         {
-            _readallCars = await RestService.GetAsync<Car>("Car");
+            _readallCars = await ConnectionService.GetAsync<Car>("Car");
         }
         catch (Exception ex)
         {

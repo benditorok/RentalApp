@@ -1,6 +1,10 @@
 ﻿@page "/"
-@using RentalApp.Client.RestApi;
-@inject IRestService RestService
+@using RentalApp.Client.Services;
+@using RentalApp.Model;
+@inject IConnectionService ConnectionService;
+
 
 <h1>Hello, world!</h1>
 
+<PopupMessage Message="Test" />
+<PopupMessage Message="Error test" Type="Error" />

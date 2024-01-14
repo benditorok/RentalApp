@@ -33,6 +33,8 @@ public class RentalAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         // Navigation properties
         modelBuilder.Entity<Rental>()
             .HasOne(r => r.Customer)
