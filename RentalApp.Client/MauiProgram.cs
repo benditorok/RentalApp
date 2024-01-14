@@ -22,9 +22,12 @@ public static class MauiProgram
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.SetMinimumLevel(LogLevel.Information);
         builder.Logging.AddDebug();
-#endif
 
         builder.Services.AddSingleton<IConnectionService, ConnectionService>();
+#else
+        // Add a custom URL when in production
+        builder.Services.AddSingleton<IConnectionService>(new ConnectionService("http://example.com/", "Status"));
+#endif
 
         return builder.Build();
     }

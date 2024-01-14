@@ -40,7 +40,6 @@ public class ConnectionService : IConnectionService
 
     public ConnectionService(ILogger<ConnectionService> logger, string baseurl = "http://localhost:8080/", string pingableEndpoint = "Status") : this(baseurl, pingableEndpoint)
     {
-        //"http://localhost:8080/", "Status"
         _logger = logger;
     }
 
