@@ -37,8 +37,13 @@ docker run -d -it --name rentalapp --restart=unless-stopped -p 8080:8080 -e NPGS
 ## Migrations
 Using the Package Manager Console:
 ```
-Add-Migration InitialCreate -p RentalApp.Repository -s RentalApp.Endpoint
-Update-Database
+Add-Migration InitialCreate -p RentalApp.Repository -s RentalApp.Endpoint -Context RentalAppDbContext
+Add-Migration Identity -p RentalApp.Repository -s RentalApp.Endpoint -Context RentalAppIdentityDbContext
+```
+
+```
+Update-Database -p RentalApp.Repository -s RentalApp.Endpoint -Context RentalAppDbContext
+Update-Database -p RentalApp.Repository -s RentalApp.Endpoint -Context RentalAppIdentityDbContext
 ```
 
 ## Tailwindcss
