@@ -55,10 +55,10 @@
         Submit
     </button>
 
-    @if (_readallRentals is not null)
+    @if (_readRental is not null)
     {
         <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
-            @_readallRentals.ToString()
+            @_readRental.ToString()
         </div>
     }
 </div>
@@ -189,9 +189,10 @@
     {
         try
         {
-            var maintenance = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
+            var rental = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
 
-            await ConnectionService.PostAsync<Rental>(maintenance, "Maintenance");
+            // TODO creating does not work, but sends it to the db, maybe model?
+            await ConnectionService.PostAsync<Rental>(rental, "Rental");
             await PopupMsg(true, "Creation was successful!");
         }
         catch (Exception ex)
@@ -212,7 +213,7 @@
     {
         try
         {
-            _readRental = await ConnectionService.GetAsync<Rental>(_readRentalId ?? 0, "Maintenance");
+            _readRental = await ConnectionService.GetAsync<Rental>(_readRentalId ?? 0, "Rental");
         }
         catch (Exception ex)
         {

@@ -23,7 +23,7 @@ public class Car : IEquatable<Car>
     public int Year { get; set; }
 
     [Required(ErrorMessage = "DailyCost cannot be empty!")]
-    [Range(typeof(decimal), "10.0m", "999.99m", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")]
+    [Range(typeof(decimal), "10.0", "999.99", ErrorMessage = "DailyCost for {0} must be between {1} and {2}.")]
     public decimal DailyCost { get; set; }
 
     [NotMapped]

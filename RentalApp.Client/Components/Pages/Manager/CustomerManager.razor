@@ -189,7 +189,7 @@
     {
         try
         {
-            var customer = new Customer(_createCustomerFirstName ?? "", _createCustomerLastName ?? "", _createCustomerEmail ?? "", _createCustomerPhone ?? "", _createCustomerAddress ?? "");
+            var customer = new Customer(_createCustomerFirstName ?? "", _createCustomerLastName ?? "", _createCustomerEmail ?? "", _createCustomerPhone ?? "", _createCustomerAddress);
 
             await ConnectionService.PostAsync<Customer>(customer, "Customer");
             await PopupMsg(true, "Creation was successful!");

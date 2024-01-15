@@ -180,6 +180,7 @@
         {
             var maintenance = new Maintenance(_createMaintenanceDate ?? DateTime.Now, _createMaintenanceDescription ?? "", _createMaintenanceCost ?? 0, _createMaintenanceCarId ?? 0);
 
+            // TODO creating does not work, but sends it to the db, maybe model?
             await ConnectionService.PostAsync<Maintenance>(maintenance, "Maintenance");
             await PopupMsg(true, "Creation was successful!");
         }
