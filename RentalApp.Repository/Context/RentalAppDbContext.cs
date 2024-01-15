@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
+using System.Text.Json;
 
 namespace RentalApp.Repository.Context;
 
@@ -22,21 +23,12 @@ public class RentalAppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string? conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")! ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)!;
+            string? conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")
+                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User);
 
-            // If no connection string is present, it will use an inmemory database
-            if (conn is not null)
-            {
-                optionsBuilder
+            optionsBuilder
                 .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
                 .UseLazyLoadingProxies();
-            }
-            else
-            {
-                optionsBuilder
-                .UseInMemoryDatabase("rental")
-                .UseLazyLoadingProxies();
-            }
         }
     }
 
