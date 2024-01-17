@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using RentalApp.Logic;
-using RentalApp.Logic.Logic;
+using RentalApp.Logic.Logics;
 using RentalApp.Model;
 using RentalApp.Repository;
 

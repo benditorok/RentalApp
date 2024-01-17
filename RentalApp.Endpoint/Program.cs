@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using RentalApp.Logic;
-using RentalApp.Logic.Logic;
+using RentalApp.Logic.Logics;
 using RentalApp.Model;
 using RentalApp.Repository;
 using RentalApp.Repository.Context;
