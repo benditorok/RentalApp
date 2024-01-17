@@ -165,7 +165,7 @@ namespace RentalApp.Repository.Migrations.RentalAppIdentityDb
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "69CA1A13-F868-42D2-8F5F-C6650B9BE577", 0, "a03682d4-6d3d-425c-9039-db77900bfb52", null, false, false, null, null, "MAINMANAGER", "AQAAAAIAAYagAAAAEA79Hts1aZVWOordxEzmEjHZPywceHfmkDlQmHtaMUpRAUckjS0965zKmX6DpqwZlg==", null, false, "5683a675-4d89-4206-a231-b120b7c3ccc7", false, "mainManager" });
+                values: new object[] { "69CA1A13-F868-42D2-8F5F-C6650B9BE577", 0, "dcb799f2-608a-453b-b028-2e1b09ac2f27", null, false, false, null, null, "MANAGER", "AQAAAAIAAYagAAAAEK4pkBWHtgZuulRvsitvi7wGsLM1BsL+uCnJbbzJi5axLz8fq37uk9CYDID8Mqfilw==", null, false, "b56cec65-8ba2-430a-bf5e-01bf66c41296", false, "Manager" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

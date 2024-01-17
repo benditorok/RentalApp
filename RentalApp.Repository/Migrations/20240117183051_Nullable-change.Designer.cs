@@ -12,8 +12,8 @@ using RentalApp.Repository.Context;
 namespace RentalApp.Repository.Migrations
 {
     [DbContext(typeof(RentalAppDbContext))]
-    [Migration("20240105214047_RentalApp")]
-    partial class RentalApp
+    [Migration("20240117183051_Nullable-change")]
+    partial class Nullablechange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
