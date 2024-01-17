@@ -28,10 +28,10 @@ public class Car : IEquatable<Car>
 
     [NotMapped]
     [JsonIgnore]
-    public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
+    public virtual ICollection<Rental>? Rentals { get; set; } = new HashSet<Rental>();
 
     [NotMapped]
-    public virtual ICollection<Maintenance> Maintenances { get; set; } = new HashSet<Maintenance>();
+    public virtual ICollection<Maintenance>? Maintenances { get; set; } = new HashSet<Maintenance>();
 
     public Car()
     {
