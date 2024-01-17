@@ -16,7 +16,7 @@ public class RentalAppDbContext : DbContext
 
     public RentalAppDbContext(DbContextOptions<RentalAppDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

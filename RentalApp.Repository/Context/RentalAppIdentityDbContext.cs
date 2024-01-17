@@ -8,7 +8,7 @@ public class RentalAppIdentityDbContext : IdentityDbContext<IdentityUser, Identi
 {
     public RentalAppIdentityDbContext(DbContextOptions<RentalAppIdentityDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
