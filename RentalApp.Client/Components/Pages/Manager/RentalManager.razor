@@ -94,6 +94,7 @@
                 <br />
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_updateRental.TotalCost" />
             </label>
+            <!--
             <label class="mb-4 block text-gray-700 text-sm font-bold">
                 Customer Id
                 <br />
@@ -104,6 +105,7 @@
                 <br />
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateRental.CarId" />
             </label>
+            -->
 
             <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
                 Submit
@@ -212,6 +214,7 @@
 
     private async Task UpdateAsync()
     {
+        // TODO problems on updating due to fk?
         try
         {
             if (_updateRental is null)

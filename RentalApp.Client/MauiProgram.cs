@@ -29,6 +29,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IConnectionService>(new ConnectionService("http://example.com/", "Status"));
 #endif
 
+        // TODO fix required attributes not showing exception messages
+
         return builder.Build();
     }
 }

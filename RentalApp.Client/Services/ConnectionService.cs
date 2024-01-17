@@ -251,6 +251,8 @@ public class ConnectionService : IConnectionService
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadFromJsonAsync<Exception>();
+            _logger?.LogInformation("[POST ERROR] " + error?.Message);
+
             throw new ArgumentException(error?.Message);
         }
     }
