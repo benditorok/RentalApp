@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RentalApp.Model;
 
@@ -23,6 +24,7 @@ public class Maintenance : IEquatable<Maintenance>
     public int CarId { get; set; }
 
     [NotMapped]
+    [JsonIgnore]
     public virtual Car? Car { get; set; }
 
     public Maintenance()
