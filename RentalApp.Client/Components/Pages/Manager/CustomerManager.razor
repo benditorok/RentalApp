@@ -14,27 +14,27 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         First name
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="John" type="text" @bind="_createCustomerFirstName" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="John" type="text" @bind="_createCustomer.FirstName" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Last name
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Doe" type="text" @bind="_createCustomerLastName" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Doe" type="text" @bind="_createCustomer.LastName" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Email address
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="example@email.com" type="text" @bind="_createCustomerEmail" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="example@email.com" type="text" @bind="_createCustomer.Email" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Phone number
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="+99001234567" type="text" @bind="_createCustomerPhone" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="+99001234567" type="text" @bind="_createCustomer.Phone" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Address
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="123 Placeholder Lane, Cityville, State 54321, USA" type="text" @bind="_createCustomerAddress" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="123 Placeholder Lane, Cityville, State 54321, USA" type="text" @bind="_createCustomer.Address" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -151,11 +151,7 @@
     private string _popMsg = "";
 
     // Create field
-    private string? _createCustomerFirstName;
-    private string? _createCustomerLastName;
-    private string? _createCustomerEmail;
-    private string? _createCustomerPhone;
-    private string? _createCustomerAddress;
+    private Customer _createCustomer = new();
 
     // Read field
     private int? _readCustomerId;
@@ -189,9 +185,7 @@
     {
         try
         {
-            var customer = new Customer(_createCustomerFirstName ?? "", _createCustomerLastName ?? "", _createCustomerEmail ?? "", _createCustomerPhone ?? "", _createCustomerAddress);
-
-            await ConnectionService.PostAsync<Customer>(customer, "Customer");
+            await ConnectionService.PostAsync<Customer>(_createCustomer, "Customer");
             await PopupMsg(true, "Creation was successful!");
         }
         catch (Exception ex)
@@ -200,11 +194,7 @@
         }
         finally
         {
-            _createCustomerFirstName = null;
-            _createCustomerLastName = null;
-            _createCustomerEmail = null;
-            _createCustomerPhone = null;
-            _createCustomerAddress = null;
+            _createCustomer = new();
         }
     }
 

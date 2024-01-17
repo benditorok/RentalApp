@@ -14,27 +14,27 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Start date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalStartDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRental.StartDate" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         End date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalEndDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRental.EndDate" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Total cost
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_createRentalTotalCost" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_createRental.TotalCost" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Customer Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCustomerId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRental.CustomerId" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Car Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCarId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRental.CarId" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -151,11 +151,7 @@
     private string _popMsg = "";
 
     // Create field
-    private DateTime? _createRentalStartDate;
-    private DateTime? _createRentalEndDate;
-    private decimal? _createRentalTotalCost;
-    private int? _createRentalCustomerId;
-    private int? _createRentalCarId;
+    private Rental _createRental = new();
 
     // Read field
     private int? _readRentalId;
@@ -189,10 +185,7 @@
     {
         try
         {
-            var rental = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
-
-            // TODO creating does not work, but sends it to the db, maybe model?
-            await ConnectionService.PostAsync<Rental>(rental, "Rental");
+            await ConnectionService.PostAsync<Rental>(_createRental, "Rental");
             await PopupMsg(true, "Creation was successful!");
         }
         catch (Exception ex)
@@ -201,11 +194,7 @@
         }
         finally
         {
-            _createRentalStartDate = null;
-            _createRentalEndDate = null;
-            _createRentalTotalCost = null;
-            _createRentalCustomerId = null;
-            _createRentalCarId = null;
+            _createRental = new();
         }
     }
 

@@ -1,7 +1,10 @@
 ﻿@page "/login"
 @using RentalApp.Client.Services;
 @using RentalApp.Model;
+@using RentalApp.Client.Components.Layout;
 @inject IConnectionService ConnectionService;
+
+<PopupMessage Type="@_popType" Message="@_popMsg" />
 
 <h1>Manager login page</h1>
 <hr />
@@ -19,24 +22,37 @@
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="LoginAsync">
-        Submit
+        Login
     </button>
 </div>
 
 @code {
-    private string? _errMsg;
-    public string? _username;
-    public string? _password;
+    // Popup message properties
+    private bool _popType = false;
+    private string _popMsg = "";
+
+    // TODO remove 
+    public string? _username = "Manager";
+    public string? _password = "Passw0rd";
+
+    private async Task PopupMsg(bool type, string msg)
+    {
+        _popType = type;
+        _popMsg = msg;
+
+        await InvokeAsync(StateHasChanged);
+    }
 
     private async Task LoginAsync()
     {
         try
         {
             await ConnectionService.AuthorizeAsync(_username ?? "", _password ?? "");
+            await PopupMsg(true, "Login was successful!");
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await PopupMsg(false, ex.Message);
         }
         finally
         {

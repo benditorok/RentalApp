@@ -14,22 +14,22 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createMaintenanceDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime-local" @bind="_createMaintenance.Date" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Description
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_createMaintenanceDescription" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_createMaintenance.Description" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Cost
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_createMaintenanceCost" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_createMaintenance.Cost" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Car Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createMaintenanceCarId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createMaintenance.CarId" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -141,10 +141,7 @@
     private string _popMsg = "";
 
     // Create field
-    private DateTime? _createMaintenanceDate;
-    private string? _createMaintenanceDescription;
-    private decimal? _createMaintenanceCost;
-    private int? _createMaintenanceCarId;
+    private Maintenance _createMaintenance = new();
 
     // Read field
     private int? _readMaintenanceId;
@@ -178,10 +175,7 @@
     {
         try
         {
-            var maintenance = new Maintenance(_createMaintenanceDate ?? DateTime.Now, _createMaintenanceDescription ?? "", _createMaintenanceCost ?? 0, _createMaintenanceCarId ?? 0);
-
-            // TODO creating does not work, but sends it to the db, maybe model?
-            await ConnectionService.PostAsync<Maintenance>(maintenance, "Maintenance");
+            await ConnectionService.PostAsync<Maintenance>(_createMaintenance, "Maintenance");
             await PopupMsg(true, "Creation was successful!");
         }
         catch (Exception ex)
@@ -190,10 +184,7 @@
         }
         finally
         {
-            _createMaintenanceDate = null;
-            _createMaintenanceDescription = null;
-            _createMaintenanceCost = null;
-            _createMaintenanceCarId = null;
+            _createMaintenance = new();
         }
     }
 

@@ -14,22 +14,22 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Make
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Volkswagen"  type="text" @bind="_createCarMake" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Volkswagen" type="text" @bind="_createCar.Make" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Model
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Golf" type="text" @bind="_createCarModel" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Golf" type="text" @bind="_createCar.Model" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Year
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020" type="number" @bind="_createCarYear" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020" type="number" @bind="_createCar.Year" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Daily cost
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="80" type="number" @bind="_createCarDailyCost" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="80" type="number" @bind="_createCar.DailyCost" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -141,13 +141,8 @@
     private bool _popType = false;
     private string _popMsg = "";
 
-    // TODO Make these a single car object like when updating
-    private Car _createCar = new();
     // Create field
-    private string? _createCarMake;
-    private string? _createCarModel;
-    private int? _createCarYear;
-    private decimal? _createCarDailyCost;
+    private Car _createCar = new();
 
     // Read field
     private int? _readCarId;
@@ -181,9 +176,7 @@
     {
         try
         {
-            var car = new Car(_createCarMake ?? "", _createCarModel ?? "", _createCarYear ?? 0, _createCarDailyCost ?? 0m);
-
-            await ConnectionService.PostAsync<Car>(car, "Car");
+            await ConnectionService.PostAsync<Car>(_createCar, "Car");
             await PopupMsg(true, "Creation was successful!");
         }
         catch (Exception ex)
@@ -192,10 +185,7 @@
         }
         finally
         {
-            _createCarMake = null;
-            _createCarModel = null;
-            _createCarYear = null;
-            _createCarDailyCost = null;
+            _createCar = new();
         }
     }
 
