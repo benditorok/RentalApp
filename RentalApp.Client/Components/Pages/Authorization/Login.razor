@@ -4,7 +4,7 @@
 @using RentalApp.Client.Components.Layout;
 @inject IConnectionService ConnectionService;
 
-<PopupMessage Type="@_popType" Message="@_popMsg" />
+<PopupMessage @ref="_popupMessage" />
 
 <h1>Manager login page</h1>
 <hr />
@@ -27,20 +27,16 @@
 </div>
 
 @code {
-    // Popup message properties
-    private bool _popType = false;
-    private string _popMsg = "";
+    // Popup message
+    private PopupMessage _popupMessage = new();
 
     // TODO remove 
     public string? _username = "Manager";
     public string? _password = "Passw0rd";
 
-    private async Task PopupMsg(bool type, string msg)
+    protected override async Task OnInitializedAsync()
     {
-        _popType = type;
-        _popMsg = msg;
-
-        await InvokeAsync(StateHasChanged);
+        await base.OnInitializedAsync();
     }
 
     private async Task LoginAsync()
@@ -48,11 +44,11 @@
         try
         {
             await ConnectionService.AuthorizeAsync(_username ?? "", _password ?? "");
-            await PopupMsg(true, "Login was successful!");
+            await _popupMessage.ShowNew("Login was successful!", true);
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Login failed! " + ex.Message);
         }
         finally
         {

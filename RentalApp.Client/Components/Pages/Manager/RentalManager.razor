@@ -4,7 +4,7 @@
 @using RentalApp.Client.Components.Layout;
 @inject IConnectionService ConnectionService;
 
-<PopupMessage Type="@_popType" Message="@_popMsg"/>
+<PopupMessage @ref="_popupMessage" />
 
 <h1>Rental management interface</h1>
 <hr />
@@ -148,9 +148,8 @@
 
 
 @code {
-    // Popup message properties
-    private bool _popType = false;
-    private string _popMsg = "";
+    // Popup message
+    private PopupMessage _popupMessage = new();
 
     // Create field
     private Rental _createRental = new();
@@ -175,24 +174,16 @@
         await base.OnInitializedAsync();
     }
 
-    private async Task PopupMsg(bool type, string msg)
-    {
-        _popType = type;
-        _popMsg = msg;
-
-        await InvokeAsync(StateHasChanged);
-    }
-
     private async Task CreateAsync()
     {
         try
         {
             await ConnectionService.PostAsync<Rental>(_createRental, "Rental");
-            await PopupMsg(true, "Creation was successful!");
+            await _popupMessage.ShowNew("Creation was successful!", true);
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Creation failed! " + ex.Message);
         }
         finally
         {
@@ -208,7 +199,7 @@
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 
@@ -224,13 +215,13 @@
             else
             {
                 await ConnectionService.PutAsync<Rental>(_updateRental, "Rental");
-                await PopupMsg(true, "Updating was successful!");
+                await _popupMessage.ShowNew("Update was successful!", true);
                 _updateRental = null;
             }
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Update failed! " + ex.Message);
             _updateRental = null;
         }
     }
@@ -240,11 +231,11 @@
         try
         {
             await ConnectionService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
-            await PopupMsg(true, "Deletion was successful!");
+            await _popupMessage.ShowNew("Deletion was successful!", true);
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Deletion failed! " + ex.Message);
         }
     }
 
@@ -256,7 +247,7 @@
         }
         catch (Exception ex)
         {
-            await PopupMsg(false, ex.Message);
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 }
