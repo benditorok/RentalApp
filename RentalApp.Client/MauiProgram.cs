@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using RentalApp.Client.RestApi;
+using Microsoft.Maui.Controls;
+using RentalApp.Client.Services;
 
 namespace RentalApp.Client;
 
@@ -17,11 +18,15 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
-        builder.Services.AddSingleton<IRestService>(new RestService("http://localhost:8080/api/", "status"));
-
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
         builder.Logging.AddDebug();
+
+        builder.Services.AddSingleton<IConnectionService, ConnectionService>();
+#else
+        // Add a custom URL when in production
+        builder.Services.AddSingleton<IConnectionService>(new ConnectionService("http://example.com/", "Status"));
 #endif
 
         return builder.Build();

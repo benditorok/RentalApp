@@ -23,7 +23,8 @@ public class MaintenanceRepository : Repository<Maintenance>
         foreach (PropertyInfo prop in old.GetType().GetProperties())
         {
             // Do not update navigation properties and keys
-            if (!prop.Name.Contains("id") && prop.GetAccessors().FirstOrDefault(x => x.IsVirtual) == null)
+            // Removed parameter: (!prop.Name.Contains("Id") &&)
+            if (prop.GetAccessors().FirstOrDefault(x => x.IsVirtual) == null)
             {
                 prop.SetValue(old, prop.GetValue(item));
             }

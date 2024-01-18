@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
 using RentalApp.Repository;
+using RentalApp.Logic.Utilities;
 
-namespace RentalApp.Logic.Logic;
+namespace RentalApp.Logic.Logics;
 
 public class MaintenanceLogic : IMaintenanceLogic
 {
@@ -19,6 +20,8 @@ public class MaintenanceLogic : IMaintenanceLogic
 
         if (maintenance == null)
         {
+            item.Date = item.Date.SpecifyKindUTC();
+
             repo.Create(item);
         }
         else
@@ -48,6 +51,8 @@ public class MaintenanceLogic : IMaintenanceLogic
 
         if (maintenance != null)
         {
+            item.Date = item.Date.SpecifyKindUTC();
+
             repo.Update(item);
         }
         else
@@ -105,6 +110,8 @@ public class MaintenanceLogic : IMaintenanceLogic
 
         if (maintenance == null)
         {
+            item.Date = item.Date.SpecifyKindUTC();
+
             await repo.CreateAsync(item);
         }
         else
@@ -134,6 +141,8 @@ public class MaintenanceLogic : IMaintenanceLogic
 
         if (maintenance != null)
         {
+            item.Date = item.Date.SpecifyKindUTC();
+
             await repo.UpdateAsync(item);
         }
         else

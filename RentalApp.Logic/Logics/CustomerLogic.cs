@@ -2,7 +2,7 @@
 using RentalApp.Model;
 using RentalApp.Repository;
 
-namespace RentalApp.Logic.Logic;
+namespace RentalApp.Logic.Logics;
 
 public class CustomerLogic : ICustomerLogic
 {

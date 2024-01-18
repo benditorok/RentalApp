@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
 using RentalApp.Repository;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using RentalApp.Logic.Utilities;
 
-namespace RentalApp.Logic.Logic;
+namespace RentalApp.Logic.Logics;
 
 public class RentalLogic : IRentalLogic
 {
@@ -20,6 +20,9 @@ public class RentalLogic : IRentalLogic
 
         if (rental == null)
         {
+            item.StartDate = item.StartDate.SpecifyKindUTC();
+            item.EndDate = item.EndDate.SpecifyKindUTC();
+
             repo.Create(item);
         }
         else
@@ -47,6 +50,9 @@ public class RentalLogic : IRentalLogic
 
         if (rental != null)
         {
+            item.StartDate = item.StartDate.SpecifyKindUTC();
+            item.EndDate = item.EndDate.SpecifyKindUTC();
+
             repo.Update(item);
         }
         else
@@ -122,6 +128,9 @@ public class RentalLogic : IRentalLogic
 
         if (rental == null)
         {
+            item.StartDate = item.StartDate.SpecifyKindUTC();
+            item.EndDate = item.EndDate.SpecifyKindUTC();
+
             await repo.CreateAsync(item);
         }
         else
@@ -149,6 +158,9 @@ public class RentalLogic : IRentalLogic
 
         if (rental != null)
         {
+            item.StartDate = item.StartDate.SpecifyKindUTC();
+            item.EndDate = item.EndDate.SpecifyKindUTC();
+
             repo.Update(item);
         }
         else

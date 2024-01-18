@@ -1,12 +1,10 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/rental"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/rental"
-@inject IRestService RestService;
+@using RentalApp.Client.Components.Layout;
+@inject IConnectionService ConnectionService;
 
-@if (_errMsg is not null)
-{
-    <p>@_errMsg</p>
-}
+<PopupMessage @ref="_popupMessage" />
 
 <h1>Rental management interface</h1>
 <hr />
@@ -16,27 +14,27 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Start date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalStartDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRental.StartDate" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         End date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRentalEndDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createRental.EndDate" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Total cost
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_createRentalTotalCost" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="150" type="number" @bind="_createRental.TotalCost" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Customer Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCustomerId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRental.CustomerId" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Car Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRentalCarId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createRental.CarId" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -57,10 +55,10 @@
         Submit
     </button>
 
-    @if (_readallRentals is not null)
+    @if (_readRental is not null)
     {
         <div class="bg-gray-100 shadow-md rounded px-8 py-6 mb-4">
-            @_readallRentals.ToString()
+            @_readRental.ToString()
         </div>
     }
 </div>
@@ -106,8 +104,8 @@
                 <br />
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateRental.CarId" />
             </label>
-
-            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+        
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
                 Submit
             </button>
         </div>
@@ -148,15 +146,11 @@
 
 
 @code {
-    // TODO add validation alerts or popup divs?
-    private string? _errMsg = null;
+    // Popup message
+    private PopupMessage _popupMessage = new();
 
     // Create field
-    private DateTime? _createRentalStartDate;
-    private DateTime? _createRentalEndDate;
-    private decimal? _createRentalTotalCost;
-    private int? _createRentalCustomerId;
-    private int? _createRentalCarId;
+    private Rental _createRental = new();
 
     // Read field
     private int? _readRentalId;
@@ -182,21 +176,16 @@
     {
         try
         {
-            var maintenance = new Rental(_createRentalStartDate ?? DateTime.Now, _createRentalEndDate, _createRentalTotalCost, _createRentalCustomerId ?? 0, _createRentalCarId ?? 0);
-
-            await RestService.PostAsync<Rental>(maintenance, "Maintenance");
+            await ConnectionService.PostAsync<Rental>(_createRental, "Rental");
+            await _popupMessage.ShowNew("Creation was successful!", true);
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Creation failed! " + ex.Message);
         }
         finally
         {
-            _createRentalStartDate = null;
-            _createRentalEndDate = null;
-            _createRentalTotalCost = null;
-            _createRentalCustomerId = null;
-            _createRentalCarId = null;
+            _createRental = new();
         }
     }
 
@@ -204,31 +193,33 @@
     {
         try
         {
-            _readRental = await RestService.GetAsync<Rental>(_readRentalId ?? 0, "Maintenance");
+            _readRental = await ConnectionService.GetAsync<Rental>(_readRentalId ?? 0, "Rental");
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 
     private async Task UpdateAsync()
     {
+        // TODO problems on updating due to fk?
         try
         {
             if (_updateRental is null)
             {
-                _updateRental = await RestService.GetAsync<Rental>(_updateRentalId ?? 0, "Rental");
+                _updateRental = await ConnectionService.GetAsync<Rental>(_updateRentalId ?? 0, "Rental");
             }
             else
             {
-                await RestService.PutAsync<Rental>(_updateRental, "Rental");
+                await ConnectionService.PutAsync<Rental>(_updateRental, "Rental");
+                await _popupMessage.ShowNew("Update was successful!", true);
                 _updateRental = null;
             }
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Update failed! " + ex.Message);
             _updateRental = null;
         }
     }
@@ -237,11 +228,12 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
+            await ConnectionService.DeleteAsync(_deleteRentalId ?? 0, "Rental");
+            await _popupMessage.ShowNew("Deletion was successful!", true);
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Deletion failed! " + ex.Message);
         }
     }
 
@@ -249,11 +241,11 @@
     {
         try
         {
-            _readallRentals = await RestService.GetAsync<Rental>("Rental");
+            _readallRentals = await ConnectionService.GetAsync<Rental>("Rental");
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 }

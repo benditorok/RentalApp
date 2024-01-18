@@ -33,7 +33,7 @@ public class Customer : IEquatable<Customer>
 
     [NotMapped]
     [JsonIgnore]
-    public virtual ICollection<Rental> Rentals { get; set; } = new HashSet<Rental>();
+    public virtual ICollection<Rental>? Rentals { get; set; } = new HashSet<Rental>();
 
     public Customer()
     {

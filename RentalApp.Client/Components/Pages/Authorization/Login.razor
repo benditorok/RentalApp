@@ -1,0 +1,59 @@
+﻿@page "/login"
+@using RentalApp.Client.Services;
+@using RentalApp.Model;
+@using RentalApp.Client.Components.Layout;
+@inject IConnectionService ConnectionService;
+
+<PopupMessage @ref="_popupMessage" />
+
+<h1>Manager login page</h1>
+<hr />
+
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Username or Email
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="username" type="text" @bind="_username" />
+    </label>
+    <label class="mb-4 block text-gray-700 text-sm font-bold">
+        Password
+        <br />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="********" type="password" @bind="_password" />
+    </label>
+
+    <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="LoginAsync">
+        Login
+    </button>
+</div>
+
+@code {
+    // Popup message
+    private PopupMessage _popupMessage = new();
+
+    // TODO remove 
+    public string? _username = "Manager";
+    public string? _password = "Passw0rd";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            await ConnectionService.AuthorizeAsync(_username ?? "", _password ?? "");
+            await _popupMessage.ShowNew("Login was successful!", true);
+        }
+        catch (Exception ex)
+        {
+            await _popupMessage.ShowNew("Login failed! " + ex.Message);
+        }
+        finally
+        {
+            _username = null;
+            _password = null;
+        }
+    }
+}

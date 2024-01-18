@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RentalApp.Logic;
 using RentalApp.Model;
 
@@ -7,8 +8,9 @@ namespace RentalApp.Endpoint.Controller;
 /// <summary>
 /// Rental entity API Controller.
 /// </summary>
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
+[Authorize]
 public class RentalController : ControllerBase
 {
     private IRentalLogic rentalLogic;

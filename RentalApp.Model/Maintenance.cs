@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RentalApp.Model;
 
@@ -10,7 +11,7 @@ public class Maintenance : IEquatable<Maintenance>
     public int MaintenanceId { get; set; }
 
     [Required(ErrorMessage = "Date cannot be empty!")]
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.UtcNow;
 
     [Required(ErrorMessage = "Description cannot be empty!")]
     [StringLength(256, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]
@@ -23,7 +24,8 @@ public class Maintenance : IEquatable<Maintenance>
     public int CarId { get; set; }
 
     [NotMapped]
-    public virtual Car Car { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Car? Car { get; set; }
 
     public Maintenance()
     {
@@ -58,6 +60,6 @@ public class Maintenance : IEquatable<Maintenance>
 
     public override string ToString()
     {
-        return $"MaintenanceId: {MaintenanceId}, Date: {Date}, Description: {Description}, Cost: {Cost}, CarId:{Car}";
+        return $"MaintenanceId: {MaintenanceId}, Date: {Date}, Description: {Description}, Cost: {Cost}, CarId:{CarId}";
     }
 }

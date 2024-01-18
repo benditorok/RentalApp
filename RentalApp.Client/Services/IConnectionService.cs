@@ -1,11 +1,13 @@
-﻿namespace RentalApp.Client.RestApi;
+﻿namespace RentalApp.Client.Services;
 
 /// <summary>
-/// RestService interface.
+/// Connection service interface.
 /// </summary>
-public interface IRestService
+public interface IConnectionService
 {
     event EventHandler<bool> StatusEventHandler;
+
+    Task AuthorizeAsync(string _username, string _password);
 
     Task<List<T>> GetAsync<T>(string endpoint);
 
@@ -14,8 +16,10 @@ public interface IRestService
     Task<T> GetSingleAsync<T>(string endpoint);
 
     Task<T> GetAsync<T>(int id, string endpoint);
-    
+
     Task PostAsync<T>(T item, string endpoint);
+
+    Task<string> PostAsJsonAsync(string item, string endpoint);
 
     Task DeleteAsync(int id, string endpoint);
 

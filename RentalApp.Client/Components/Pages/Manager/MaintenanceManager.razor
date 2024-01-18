@@ -1,12 +1,10 @@
-﻿@using RentalApp.Client.RestApi;
+﻿@page "/manager/maintenance"
+@using RentalApp.Client.Services;
 @using RentalApp.Model;
-@page "/manager/maintenance"
-@inject IRestService RestService;
+@using RentalApp.Client.Components.Layout;
+@inject IConnectionService ConnectionService;
 
-@if (_errMsg is not null)
-{
-    <p>@_errMsg</p>
-}
+<PopupMessage @ref="_popupMessage" />
 
 <h1>Maintenance management interface</h1>
 <hr />
@@ -16,22 +14,22 @@
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Date
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime" @bind="_createMaintenanceDate" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="2020.01.31." type="datetime-local" @bind="_createMaintenance.Date" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Description
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_createMaintenanceDescription" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Oil change" type="text" @bind="_createMaintenance.Description" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Cost
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_createMaintenanceCost" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="120" type="number" @bind="_createMaintenance.Cost" />
     </label>
     <label class="mb-4 block text-gray-700 text-sm font-bold">
         Car Id
         <br />
-        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createMaintenanceCarId" />
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_createMaintenance.CarId" />
     </label>
 
     <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
@@ -97,7 +95,7 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="1" type="number" @bind="_updateMaintenance.CarId" />
             </label>
 
-            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="CreateAsync">
+            <button class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline rounded-full" @onclick="UpdateAsync">
                 Submit
             </button>
         </div>
@@ -138,14 +136,11 @@
 
 
 @code {
-    // TODO add validation alerts or popup divs?
-    private string? _errMsg = null;
+    // Popup message
+    private PopupMessage _popupMessage = new();
 
     // Create field
-    private DateTime? _createMaintenanceDate;
-    private string? _createMaintenanceDescription;
-    private decimal? _createMaintenanceCost;
-    private int? _createMaintenanceCarId;
+    private Maintenance _createMaintenance = new();
 
     // Read field
     private int? _readMaintenanceId;
@@ -171,20 +166,16 @@
     {
         try
         {
-            var maintenance = new Maintenance(_createMaintenanceDate ?? DateTime.Now, _createMaintenanceDescription ?? "", _createMaintenanceCost ?? 0, _createMaintenanceCarId ?? 0);
-
-            await RestService.PostAsync<Maintenance>(maintenance, "Maintenance");
+            await ConnectionService.PostAsync<Maintenance>(_createMaintenance, "Maintenance");
+            await _popupMessage.ShowNew("Creation was successful!", true);
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Creation failed! " + ex.Message);
         }
         finally
         {
-            _createMaintenanceDate = null;
-            _createMaintenanceDescription = null;
-            _createMaintenanceCost = null;
-            _createMaintenanceCarId = null;
+            _createMaintenance = new();
         }
     }
 
@@ -192,11 +183,11 @@
     {
         try
         {
-            _readMaintenance = await RestService.GetAsync<Maintenance>(_readMaintenanceId ?? 0, "Maintenance");
+            _readMaintenance = await ConnectionService.GetAsync<Maintenance>(_readMaintenanceId ?? 0, "Maintenance");
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 
@@ -206,17 +197,18 @@
         {
             if (_updateMaintenance is null)
             {
-                _updateMaintenance = await RestService.GetAsync<Maintenance>(_updateMaintenanceId ?? 0, "Maintenance");
+                _updateMaintenance = await ConnectionService.GetAsync<Maintenance>(_updateMaintenanceId ?? 0, "Maintenance");
             }
             else
             {
-                await RestService.PutAsync<Maintenance>(_updateMaintenance, "Maintenance");
+                await ConnectionService.PutAsync<Maintenance>(_updateMaintenance, "Maintenance");
+                await _popupMessage.ShowNew("Update was successful!", true);
                 _updateMaintenance = null;
             }
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Update failed! " + ex.Message);
             _updateMaintenance = null;
         }
     }
@@ -225,11 +217,12 @@
     {
         try
         {
-            await RestService.DeleteAsync(_deleteMaintenanceId ?? 0, "Maintenance");
+            await ConnectionService.DeleteAsync(_deleteMaintenanceId ?? 0, "Maintenance");
+            await _popupMessage.ShowNew("Deletion was successful!", true);
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Deletion failed! " + ex.Message);
         }
     }
 
@@ -237,11 +230,11 @@
     {
         try
         {
-            _readallMaintenances = await RestService.GetAsync<Maintenance>("Maintenance");
+            _readallMaintenances = await ConnectionService.GetAsync<Maintenance>("Maintenance");
         }
         catch (Exception ex)
         {
-            _errMsg = ex.Message;
+            await _popupMessage.ShowNew("Reading failed! " + ex.Message);
         }
     }
 }

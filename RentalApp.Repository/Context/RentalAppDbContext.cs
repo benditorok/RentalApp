@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentalApp.Model;
+using System.Text.Json;
 
 namespace RentalApp.Repository.Context;
 
@@ -15,15 +16,15 @@ public class RentalAppDbContext : DbContext
 
     public RentalAppDbContext(DbContextOptions<RentalAppDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            string conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User)
-                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL")!;
+            string? conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")
+                ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User);
 
             optionsBuilder
                 .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
@@ -33,6 +34,8 @@ public class RentalAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         // Navigation properties
         modelBuilder.Entity<Rental>()
             .HasOne(r => r.Customer)

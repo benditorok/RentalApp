@@ -20,10 +20,20 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7057;http://localhost:5276"
     },
-    "IIS Express": {
+    "IIS Express (swagger)": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "8080 Dev": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "executablePath": "dotnet",
+      "commandLineArgs": "run --project Endpoint.csproj",
+      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -10,7 +10,7 @@ public class Rental : IEquatable<Rental>
     public int RentalId { get; set; }
 
     [Required(ErrorMessage = "StartDate cannot be empty!")]
-    public DateTime StartDate { get; set; }
+    public DateTime StartDate { get; set; } = DateTime.UtcNow;
 
     public DateTime? EndDate { get; set; }
 
@@ -25,10 +25,10 @@ public class Rental : IEquatable<Rental>
     public int CarId { get; set; }
 
     [NotMapped]
-    public virtual Customer Customer { get; set; } = null!;
+    public virtual Customer? Customer { get; set; }
 
     [NotMapped]
-    public virtual Car Car { get; set; } = null!;
+    public virtual Car? Car { get; set; }
 
     public Rental()
     {

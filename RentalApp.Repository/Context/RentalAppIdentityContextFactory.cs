@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace RentalApp.Repository.Context;
 
-public class RentalAppContextFactory : IDesignTimeDbContextFactory<RentalAppDbContext>
+public class RentalAppIdentityContextFactory : IDesignTimeDbContextFactory<RentalAppIdentityDbContext>
 {
-    public RentalAppDbContext CreateDbContext(string[] args)
+    public RentalAppIdentityDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<RentalAppDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<RentalAppIdentityDbContext>();
 
         string? conn = Environment.GetEnvironmentVariable("NPGSQL_RENTAL")
                 ?? Environment.GetEnvironmentVariable("NPGSQL_RENTAL", EnvironmentVariableTarget.User);
@@ -16,6 +16,6 @@ public class RentalAppContextFactory : IDesignTimeDbContextFactory<RentalAppDbCo
             .UseNpgsql(conn, x => x.MigrationsAssembly("RentalApp.Repository"))
             .UseLazyLoadingProxies();
 
-        return new RentalAppDbContext(optionsBuilder.Options);
+        return new RentalAppIdentityDbContext(optionsBuilder.Options);
     }
 }
